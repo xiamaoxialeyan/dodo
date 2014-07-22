@@ -1,5 +1,6 @@
 header
 	h1 This is Header!
-nav
-	- for w in ['A','B','C']
-		a(href='\##{w}') #{w}
+if isLogin
+	include nav_login.jade
+else
+	include nav.jade

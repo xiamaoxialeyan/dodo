@@ -1,0 +1,5 @@
+nav
+	each n in [{name:'导航',type:'web'},{name:'画廊',type:'gallary'},{name:'简历',type:'resume'},{name:'代码',type:'code'},{name:'帐号',type:'user'},{name:'密码',type:'pwd'},{name:'退出',type:'logout'}]
+		a.navicon
+			span.icon(class=n.type)
+			span.lbl #{n.name}

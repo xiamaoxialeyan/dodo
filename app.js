@@ -7,6 +7,7 @@ var express = require('express'),
     index = require('./routes/index'),
     users = require('./routes/users'),
     data = require('./routes/web'),
+    gallary = require('./routes/gallary'),
     note = require('./routes/note');
 
 var app = express();
@@ -20,12 +21,14 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
+
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/lib', express.static(path.join(__dirname, 'lib')));
 
 app.use('/', index);
 app.use('/users', users);
 app.use('/web', data);
+app.use('/gallary', gallary);
 app.use('/note', note);
 
 /// catch 404 and forward to error handler

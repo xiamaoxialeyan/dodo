@@ -4,12 +4,11 @@ var express = require('express'),
 
 /* users services. */
 router.post('/login', function(req, res) {
-    res.send(200, JSON.stringify(user.login(req.body)) + '<a href="/users/logout">logout</a>');
+    user.login(req, res);
 });
 
 router.get('/logout', function(req, res) {
-    user.logout();
-    res.redirect('/');
+    user.logout(req, res);
 });
 
 module.exports = router;

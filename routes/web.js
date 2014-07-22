@@ -3,13 +3,21 @@ var express = require('express'),
     groups = require('../web/groups'),
     sites = require('../web/sites');
 
-/* data service. */
+/* web services. */
 router.get('/getgroups', function(req, res) {
     groups.getGroups(req, res);
 });
 
+router.get('/getGroup', function(req, res) {
+    groups.getGroup(req, res);
+});
+
 router.get('/getsites', function(req, res) {
-    res.json(sites.getSites());
+    sites.getSites(req, res);
+});
+
+router.get('/getsite', function(req, res) {
+    sites.getSite(req, res);
 });
 
 module.exports = router;

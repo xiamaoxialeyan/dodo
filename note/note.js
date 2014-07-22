@@ -11,6 +11,10 @@ function param_error(cb) {
     });
 }
 
+function isNoExist(result) {
+    return result.status === status.NO_EXIST || !Object.keys(result.data).length;
+}
+
 function no_exist(id, cb, n) {
     cb && cb({
         status: status.NO_EXIST,
@@ -35,6 +39,10 @@ function query_success(data, cb, n) {
         message: '查询' + ns[n] + '成功',
         data: data
     });
+}
+
+function query_result(err, id, result, cb, n) {
+    err ? query_failed(cb, n) : (id ? (result.data.length ? query_success(result.data[0], cb, n) : no_exist(id, cb, n)) : query_success(result.data, cb, n));
 }
 
 function insert_result(err, result, cb, n) {
@@ -77,21 +85,17 @@ function recover_result(err, id, result, cb) {
     cb && cb(r);
 }
 
-function isEmpty(obj) {
-    return !obj || !Object.keys(obj).length;
-}
-
 var api = {
     getNoteTypes: function(cb) {
         db.query("select * from note_type", function(err, data) {
-            err ? query_failed(cb, 0) : query_success(data, cb, 0);
+            query_result(err, null, data, cb, 0);
         });
     },
 
     getNoteType: function(id, cb) {
         function get() {
             db.query("select * from note_type where `id`=?", [id], function(err, data) {
-                err ? query_failed(cb, 0) : (data.length ? query_success(data[0], cb, 0) : no_exist(id, cb, 0));
+                query_result(err, id, data, cb, 0);
             });
         }
         id ? get() : param_error(cb);
@@ -100,15 +104,14 @@ var api = {
     getNoteGroups: function(typeId, cb) {
         function check() {
             api.getNoteType(typeId, function(result) {
-                var data = result.data;
-                result.status === status.NO_EXIST || isEmpty(data) ? no_exist(typeId, cb, 0) : get();
+                isNoExist(result) ? no_exist(typeId, cb, 0) : get();
             });
         }
         typeId ? check() : param_error(cb);
 
         function get() {
             db.query("select * from note_group where `type`=?", [typeId], function(err, data) {
-                err ? query_failed(cb, 1) : query_success(data, cb, 1);
+                query_result(err, null, data, cb, 1);
             });
         }
     },
@@ -116,7 +119,7 @@ var api = {
     getNoteGroup: function(id, cb) {
         function get() {
             db.query("select * from note_group where `id`=?", [id], function(err, data) {
-                err ? query_failed(cb, 1) : (data.length ? query_success(data[0], cb, 1) : no_exist(id, cb, 1));
+                query_result(err, id, data, cb, 1);
             });
         }
         id ? get() : param_error(cb);
@@ -125,15 +128,14 @@ var api = {
     getNotes: function(groupId, cb) {
         function check() {
             api.getNoteGroup(groupId, function(result) {
-                var data = result.data;
-                result.status === status.NO_EXIST || isEmpty(data) ? no_exist(groupId, cb, 1) : get();
+                isNoExist(result) ? no_exist(groupId, cb, 1) : get();
             });
         }
         groupId ? check() : param_error(cb);
 
         function get() {
             db.query("select * from note where `group`=?", [groupId], function(err, data) {
-                err ? query_failed(cb, 2) : query_success(data, cb, 2);
+                query_result(err, null, data, cb, 2);
             });
         }
     },
@@ -141,7 +143,7 @@ var api = {
     getNote: function(id, cb) {
         function get() {
             db.query("select * from note where `id`=?", [id], function(err, data) {
-                err ? query_failed(cb, 2) : (data.length ? query_success(data[0], cb, 2) : no_exist(id, cb, 2));
+                query_result(err, id, data, cb, 2);
             });
         }
         id ? get() : param_error(cb);
@@ -161,8 +163,7 @@ var api = {
     addNoteGroup: function(typeId, name, cb) {
         function check() {
             api.getNoteType(typeId, function(result) {
-                var data = result.data;
-                result.status === status.NO_EXIST || isEmpty(data) ? no_exist(typeId, cb, 0) : insert();
+                isNoExist(result) ? no_exist(typeId, cb, 0) : insert();
             });
         }
         typeId && name ? check() : param_error(cb);
@@ -180,8 +181,7 @@ var api = {
     addNote: function(groupId, name, content, signature, cb) {
         function check() {
             api.getNoteGroup(groupId, function(result) {
-                var data = result.data;
-                isEmpty(data) ? no_exist(groupId, cb, 1) : insert(data.type);
+                isNoExist(result) ? no_exist(groupId, cb, 1) : insert(result.data.type);
             });
         }
         groupId && name ? check() : param_error(cb);
@@ -203,8 +203,7 @@ var api = {
     modifyNoteType: function(id, name, cb) {
         function check() {
             api.getNoteType(id, function(result) {
-                var data = result.data;
-                isEmpty(data) ? no_exist(id, cb, 0) : update();
+                isNoExist(result) ? no_exist(id, cb, 0) : update();
             });
         }
         id && name ? check() : param_error(cb);
@@ -219,8 +218,7 @@ var api = {
     modifyNoteGroup: function(id, name, cb) {
         function check() {
             api.getNoteGroup(id, function(result) {
-                var data = result.data;
-                isEmpty(data) ? no_exist(id, cb, 1) : update();
+                isNoExist(result) ? no_exist(id, cb, 1) : update();
             });
         }
         id && name ? check() : param_error(cb);
@@ -235,8 +233,7 @@ var api = {
     modifyNote: function(id, name, content, signature, cb) {
         function check() {
             api.getNote(id, function(result) {
-                var data = result.data;
-                isEmpty(data) ? no_exist(id, cb, 2) : update();
+                isNoExist(result) ? no_exist(id, cb, 2) : update();
             });
         }
         id && (name || content || signature) ? check() : param_error(cb);
@@ -256,8 +253,7 @@ var api = {
     deleteNoteType: function(id, cb) {
         function check() {
             api.getNoteType(id, function(result) {
-                var data = result.data;
-                isEmpty(data) ? no_exist(id, cb, 0) : del();
+                isNoExist(result) ? no_exist(id, cb, 0) : del();
             });
         }
         id ? check() : param_error(cb);
@@ -272,8 +268,7 @@ var api = {
     deleteNoteGroup: function(id, cb) {
         function check() {
             api.getNoteGroup(id, function(result) {
-                var data = result.data;
-                isEmpty(data) ? no_exist(id, cb, 1) : del();
+                isNoExist(result) ? no_exist(id, cb, 1) : del();
             });
         }
         id ? check() : param_error(cb);
@@ -288,8 +283,7 @@ var api = {
     clearNoteGroup: function(id, cb) {
         function check() {
             api.getNoteGroup(id, function(result) {
-                var data = result.data;
-                isEmpty(data) ? no_exist(id, cb, 1) : clear();
+                isNoExist(result) ? no_exist(id, cb, 1) : clear();
             });
         }
         id ? check() : param_error(cb);
@@ -304,8 +298,7 @@ var api = {
     deleteNote: function(id, cb) {
         function check() {
             api.getNote(id, function(result) {
-                var data = result.data;
-                isEmpty(data) ? no_exist(id, cb, 2) : del();
+                isNoExist(result) ? no_exist(id, cb, 2) : del();
             });
         }
         id ? check() : param_error(cb);
@@ -319,14 +312,14 @@ var api = {
 
     getRecycles: function(cb) {
         db.query("select * from note_recycle", function(err, data) {
-            err ? query_failed(cb, 3) : query_success(data, cb, 3);
+            query_result(err, null, data, cb, 3);
         });
     },
 
     getRecycle: function(id, cb) {
         function get() {
             db.query("select * from note_recycle where ??=?", ['id', id], function(err, data) {
-                err ? query_failed(cb, 3) : (data.length ? query_success(data[0], cb, 3) : no_exist(id, cb, 3));
+                query_result(err, id, data, cb, 3);
             });
         }
         id ? get() : param_error(cb);
@@ -335,8 +328,7 @@ var api = {
     recycle: function(id, cb) {
         function check() {
             api.getRecycle(id, function(result) {
-                var data = result.data;
-                isEmpty(data) ? no_exist(id, cb, 2) : recover(data);
+                isNoExist(result) ? no_exist(id, cb, 2) : recover(result.data);
             });
         }
         id ? check() : param_error(cb);
@@ -357,8 +349,7 @@ var api = {
 
     recycles: function(cb) {
         this.getRecycles(function(result) {
-            var data = result.data;
-            isEmpty(data) ? recover_result({}, null, result, cb) : recover(data);
+            isNoExist(result) ? recover_result({}, null, result, cb) : recover(result.data);
         });
 
         function recover(data) {
@@ -384,8 +375,7 @@ var api = {
     deleteRecycle: function(id, cb) {
         function check() {
             api.getRecycle(id, function(result) {
-                var data = result.data;
-                isEmpty(data) ? no_exist(id, cb, 2) : del();
+                isNoExist(result) ? no_exist(id, cb, 2) : del();
             });
         }
         id ? check() : param_error(cb);
