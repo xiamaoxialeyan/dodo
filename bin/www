@@ -1,0 +1,8 @@
+var app = require('../app');
+var vhost = require('vhost');
+
+app.use(vhost('www.dodo.com.cn', app));
+
+var server = app.listen(3000, function() {
+    console.log('DoDo server http://www.dodo.com.cn listening on 3000');
+});
