@@ -1,3 +1,5 @@
+/******api for note service*******/
+
 var db = require('../db'),
     status = require('../status.json');
 
@@ -11,8 +13,8 @@ function param_error(cb) {
     });
 }
 
-function isNoExist(result) {
-    return result.status === status.NO_EXIST || !Object.keys(result.data).length;
+function isExist(result) {
+    return result.status !== status.NO_EXIST && Object.keys(result.data).length;
 }
 
 function no_exist(id, cb, n) {
@@ -41,8 +43,8 @@ function query_success(data, cb, n) {
     });
 }
 
-function query_result(err, id, result, cb, n) {
-    err ? query_failed(cb, n) : (id ? (result.data.length ? query_success(result.data[0], cb, n) : no_exist(id, cb, n)) : query_success(result.data, cb, n));
+function query_result(err, id, data, cb, n) {
+    err ? query_failed(cb, n) : (id ? (data.length ? query_success(data[0], cb, n) : no_exist(id, cb, n)) : query_success(data, cb, n));
 }
 
 function insert_result(err, result, cb, n) {
@@ -55,20 +57,20 @@ function insert_result(err, result, cb, n) {
     cb && cb(r);
 }
 
-function update_result(err, id, result, cb) {
+function update_result(err, id, result, cb, n) {
     var r = {};
     r.status = err ? status.FAILED : status.SUCCESS;
-    r.message = (err || !result.changedRows) ? '修改数据失败' : '修改数据成功';
+    r.message = '修改' + ns[n] + (err || !result.changedRows) ? '失败' : '成功';
     r.data = {
         id: id
     };
     cb && cb(r);
 }
 
-function delete_result(err, id, result, cb) {
+function delete_result(err, id, result, cb, n) {
     var r = {};
     r.status = err ? status.FAILED : status.SUCCESS;
-    r.message = (err || !result.affectedRows) ? '删除数据失败' : '删除数据成功';
+    r.message = '删除' + ns[n] + (err || !result.affectedRows) ? '失败' : '成功';
     r.data = {
         id: id
     };
@@ -94,7 +96,7 @@ var api = {
 
     getNoteType: function(id, cb) {
         function get() {
-            db.query("select * from note_type where `id`=?", [id], function(err, data) {
+            db.query("select * from note_type where `id`=?", id, function(err, data) {
                 query_result(err, id, data, cb, 0);
             });
         }
@@ -102,15 +104,15 @@ var api = {
     },
 
     getNoteGroups: function(typeId, cb) {
-        function check() {
+        function find() {
             api.getNoteType(typeId, function(result) {
-                isNoExist(result) ? no_exist(typeId, cb, 0) : get();
+                isExist(result) ? get() : no_exist(typeId, cb, 0);
             });
         }
-        typeId ? check() : param_error(cb);
+        typeId ? find() : param_error(cb);
 
         function get() {
-            db.query("select * from note_group where `type`=?", [typeId], function(err, data) {
+            db.query("select * from note_group where `type`=?", typeId, function(err, data) {
                 query_result(err, null, data, cb, 1);
             });
         }
@@ -118,7 +120,7 @@ var api = {
 
     getNoteGroup: function(id, cb) {
         function get() {
-            db.query("select * from note_group where `id`=?", [id], function(err, data) {
+            db.query("select * from note_group where `id`=?", id, function(err, data) {
                 query_result(err, id, data, cb, 1);
             });
         }
@@ -126,15 +128,15 @@ var api = {
     },
 
     getNotes: function(groupId, cb) {
-        function check() {
+        function find() {
             api.getNoteGroup(groupId, function(result) {
-                isNoExist(result) ? no_exist(groupId, cb, 1) : get();
+                isExist(result) ? get() : no_exist(groupId, cb, 1);
             });
         }
-        groupId ? check() : param_error(cb);
+        groupId ? find() : param_error(cb);
 
         function get() {
-            db.query("select * from note where `group`=?", [groupId], function(err, data) {
+            db.query("select * from note where `group`=?", groupId, function(err, data) {
                 query_result(err, null, data, cb, 2);
             });
         }
@@ -142,7 +144,7 @@ var api = {
 
     getNote: function(id, cb) {
         function get() {
-            db.query("select * from note where `id`=?", [id], function(err, data) {
+            db.query("select * from note where `id`=?", id, function(err, data) {
                 query_result(err, id, data, cb, 2);
             });
         }
@@ -151,9 +153,7 @@ var api = {
 
     addNoteType: function(name, cb) {
         function insert() {
-            db.query("insert into note_type set ?", {
-                name: name
-            }, function(err, result) {
+            db.query("insert into note_type set `name`=?,`ctime`=now()", name, function(err, result) {
                 insert_result(err, result, cb, 0);
             });
         }
@@ -161,151 +161,141 @@ var api = {
     },
 
     addNoteGroup: function(typeId, name, cb) {
-        function check() {
+        function find() {
             api.getNoteType(typeId, function(result) {
-                isNoExist(result) ? no_exist(typeId, cb, 0) : insert();
+                isExist(result) ? insert() : no_exist(typeId, cb, 0);
             });
         }
-        typeId && name ? check() : param_error(cb);
+        typeId && name ? find() : param_error(cb);
 
         function insert() {
-            db.query("insert into note_group set ?", {
-                type: typeId,
-                name: name
-            }, function(err, result) {
+            db.query("insert into note_group set `type`=?,`name`=?,`ctime`=now()", [typeId, name], function(err, result) {
                 insert_result(err, result, cb, 1);
             });
         }
     },
 
     addNote: function(groupId, name, content, signature, cb) {
-        function check() {
+        function find() {
             api.getNoteGroup(groupId, function(result) {
-                isNoExist(result) ? no_exist(groupId, cb, 1) : insert(result.data.type);
+                isExist(result) ? insert(result.data.type) : no_exist(groupId, cb, 1);
             });
         }
-        groupId && name ? check() : param_error(cb);
+        groupId && name ? find() : param_error(cb);
 
         function insert(typeId) {
-            db.query("insert into note set ?", {
-                type: typeId,
-                group: groupId,
-                name: name,
-                content: content || '',
-                signature: signature || '',
-                modify_date: null
-            }, function(err, result) {
+            db.query("insert into note set `type`=?,`group`=?,`name`=?,`content`=?,`signature`=?,ctime=now()", [typeId, groupId, name, content, signature], function(err, result) {
                 insert_result(err, result, cb, 2);
             });
         }
     },
 
     modifyNoteType: function(id, name, cb) {
-        function check() {
+        function find() {
             api.getNoteType(id, function(result) {
-                isNoExist(result) ? no_exist(id, cb, 0) : update();
+                isExist(result) ? update() : no_exist(id, cb, 0);
             });
         }
-        id && name ? check() : param_error(cb);
+        id && name ? find() : param_error(cb);
 
         function update() {
             db.query("update note_type set ??=? where ??=?", ['name', name, 'id', id], function(err, result) {
-                update_result(err, id, result, cb);
+                update_result(err, id, result, cb, 0);
             });
         }
     },
 
     modifyNoteGroup: function(id, name, cb) {
-        function check() {
+        function find() {
             api.getNoteGroup(id, function(result) {
-                isNoExist(result) ? no_exist(id, cb, 1) : update();
+                isExist(result) ? update() : no_exist(id, cb, 1);
             });
         }
-        id && name ? check() : param_error(cb);
+        id && name ? find() : param_error(cb);
 
         function update() {
             db.query("update note_group set ??=? where ??=?", ['name', name, 'id', id], function(err, result) {
-                update_result(err, id, result, cb);
+                update_result(err, id, result, cb, 1);
             });
         }
     },
 
     modifyNote: function(id, name, content, signature, cb) {
-        function check() {
+        function find() {
             api.getNote(id, function(result) {
-                isNoExist(result) ? no_exist(id, cb, 2) : update();
+                isExist(result) ? update() : no_exist(id, cb, 2);
             });
         }
-        id && (name || content || signature) ? check() : param_error(cb);
+        id && (name === undefined || content === undefined || signature === undefined) ? find() : param_error(cb);
 
         function update() {
             var settings = {};
-            name && (settings['name'] = name);
-            content && (settings['content'] = content);
-            signature && (settings['signature'] = signature);
+            name !== undefined && (settings['name'] = name);
+            content !== undefined && (settings['content'] = content);
+            signature !== undefined && (settings['signature'] = signature);
 
             db.query("update note set " + db.escape(settings) + " where ??=?", ['id', id], function(err, result) {
-                update_result(err, id, result, cb);
+                update_result(err, id, result, cb, 2);
             });
         }
     },
 
     deleteNoteType: function(id, cb) {
-        function check() {
+        function find() {
             api.getNoteType(id, function(result) {
-                isNoExist(result) ? no_exist(id, cb, 0) : del();
+                isExist(result) ? del() : no_exist(id, cb, 0);
             });
         }
-        id ? check() : param_error(cb);
+        id ? find() : param_error(cb);
 
         function del() {
             db.query("delete from note_type where ??=?", ['id', id], function(err, result) {
-                delete_result(err, id, result, cb);
+                delete_result(err, id, result, cb, 0);
             });
         }
     },
 
     deleteNoteGroup: function(id, cb) {
-        function check() {
+        function find() {
             api.getNoteGroup(id, function(result) {
-                isNoExist(result) ? no_exist(id, cb, 1) : del();
+                isExist(result) ? del() : no_exist(id, cb, 1);
             });
         }
-        id ? check() : param_error(cb);
+        id ? find() : param_error(cb);
 
         function del() {
             db.query("delete from note_group where ??=?", ['id', id], function(err, result) {
-                delete_result(err, id, result, cb);
-            });
-        }
-    },
-
-    clearNoteGroup: function(id, cb) {
-        function check() {
-            api.getNoteGroup(id, function(result) {
-                isNoExist(result) ? no_exist(id, cb, 1) : clear();
-            });
-        }
-        id ? check() : param_error(cb);
-
-        function clear() {
-            db.query("delete from note where ??=?", ['group', id], function(err, result) {
-                delete_result(err, id, result, cb);
+                delete_result(err, id, result, cb, 1);
             });
         }
     },
 
     deleteNote: function(id, cb) {
-        function check() {
+        function find() {
             api.getNote(id, function(result) {
-                isNoExist(result) ? no_exist(id, cb, 2) : del();
+                isExist(result) ? del() : no_exist(id, cb, 2);
             });
         }
-        id ? check() : param_error(cb);
+        id ? find() : param_error(cb);
 
         function del() {
             db.query("delete from note where ??=?", ['id', id], function(err, result) {
-                delete_result(err, id, result, cb);
+                delete_result(err, id, result, cb, 2);
+            });
+        }
+    },
+
+    deleteNotes: function(groupId, cb) {
+        function find() {
+            api.getNoteGroup(groupId, function(result) {
+                isExist(result) ? clear() : no_exist(groupId, cb, 1);
+            });
+        }
+        groupId ? find() : param_error(cb);
+
+        function clear() {
+            db.query("delete from note where ??=?", ['group', groupId], function(err, result) {
+                delete_result(err, groupId, result, cb, 2);
             });
         }
     },
@@ -326,15 +316,15 @@ var api = {
     },
 
     recycle: function(id, cb) {
-        function check() {
+        function find() {
             api.getRecycle(id, function(result) {
-                isNoExist(result) ? no_exist(id, cb, 2) : recover(result.data);
+                isExist(result) ? recover(result.data) : no_exist(id, cb, 3);
             });
         }
-        id ? check() : param_error(cb);
+        id ? find() : param_error(cb);
 
         function recover(data) {
-            delete data.delete_date;
+            delete data.dtime;
             db.query("insert into note set ?", data, function(err, result) {
                 err ? recover_result(err, id, result, cb) : del();
             });
@@ -349,14 +339,14 @@ var api = {
 
     recycles: function(cb) {
         this.getRecycles(function(result) {
-            isNoExist(result) ? recover_result({}, null, result, cb) : recover(result.data);
+            isExist(result) ? recover(result.data) : recover_result({}, null, result, cb);
         });
 
         function recover(data) {
             var sql = [];
             for (var i = 0, l = data.length; i < l; i++) {
                 var d = data[i];
-                delete d.delete_date;
+                delete d.dtime;
                 sql[sql.length++] = "insert into note set " + db.escape(d);
             }
 
@@ -373,23 +363,23 @@ var api = {
     },
 
     deleteRecycle: function(id, cb) {
-        function check() {
+        function find() {
             api.getRecycle(id, function(result) {
-                isNoExist(result) ? no_exist(id, cb, 2) : del();
+                isExist(result) ? del() : no_exist(id, cb, 3);
             });
         }
-        id ? check() : param_error(cb);
+        id ? find() : param_error(cb);
 
         function del() {
             db.query("delete from note_recycle where ??=?", ['id', id], function(err, result) {
-                delete_result(err, id, result, cb);
+                delete_result(err, id, result, cb, 3);
             });
         }
     },
 
     clearRecycles: function(cb) {
         db.query("delete from note_recycle", function(err, result) {
-            delete_result(err, null, result, cb);
+            delete_result(err, null, result, cb, 3);
         });
     }
 }

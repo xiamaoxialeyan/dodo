@@ -1,9 +1,10 @@
 var express = require('express'),
     router = express.Router(),
-    gallary = require('../gallary/gallary'),
-    photo = require('../gallary/photo');
+    api = require('../gallary/gallary');
 
 /* gallary services. */
-
+router.get('/', function(req, res) {
+    res.redirect('/');
+});
 
 module.exports = router;

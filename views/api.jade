@@ -1,0 +1,48 @@
+extends layout
+
+block content
+	form#formbox(autocomplate="on")
+		div
+			label 接口
+				input(name = "api")
+		div
+			label
+				input(type = "radio", name = "method", value = "get", checked)
+				|get
+			label
+				input(type = "radio", name = "method", value = "post")
+				|post
+		div
+			label 参数
+				textarea(name = "params")
+		div
+			label
+				input(type = "submit", value = "提交")
+	#result
+		|请求结果
+		textarea(style="width:100%;height:200px;")
+
+block footer
+	script(type = "text/javascript").
+		var form = document.getElementById('formbox');
+		form.onsubmit = function(evt) {
+			evt.preventDefault();
+
+			var url = '/web/' + form.api.value,
+			method = form.method.value,
+			params = form.params.value;
+
+			method == 'get' && (url += '?' + params, params = null);
+
+			var xhr = new XMLHttpRequest();
+			xhr.open(method, url, true);
+
+			method == 'post' && xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			xhr.send(params);
+
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4 && xhr.status == 200) {
+					document.getElementById("result").lastChild.value = xhr.responseText;
+				}
+			}
+		}

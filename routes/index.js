@@ -20,4 +20,10 @@ router.get('/error', function(req, res) {
     });
 });
 
+router.get('/api', function(req, res) {
+    res.render('api', {
+        title: 'API Debug - DoDo'
+    });
+});
+
 module.exports = router;

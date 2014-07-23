@@ -1,23 +1,76 @@
 var express = require('express'),
     router = express.Router(),
-    groups = require('../web/groups'),
-    sites = require('../web/sites');
+    api = require('../web/web');
 
 /* web services. */
-router.get('/getgroups', function(req, res) {
-    groups.getGroups(req, res);
+router.get('/', function(req, res) {
+    res.redirect('/');
 });
 
-router.get('/getGroup', function(req, res) {
-    groups.getGroup(req, res);
+router.get('/groups', function(req, res) {
+    api.getGroups(function(result) {
+        res.json(result);
+    });
 });
 
-router.get('/getsites', function(req, res) {
-    sites.getSites(req, res);
+router.get('/group', function(req, res) {
+    api.getGroup(parseInt(req.query.id), function(result) {
+        res.json(result);
+    });
 });
 
-router.get('/getsite', function(req, res) {
-    sites.getSite(req, res);
+router.get('/sites', function(req, res) {
+    api.getSites(parseInt(req.query.group), function(result) {
+        res.json(result);
+    });
+});
+
+router.get('/site', function(req, res) {
+    api.getSite(parseInt(req.query.id), function(result) {
+        res.json(result);
+    });
+});
+
+router.get('/siteall', function(req, res) {
+    api.getSiteAll(function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/group', function(req, res) {
+    var body = req.body;
+    body.id ? api.modifyGroup(parseInt(body.id), body.name, function(result) {
+        res.json(result);
+    }) : api.addGroup(body.name, function(result) {
+        res.json(result);
+    });
+});
+
+router.post('/site', function(req, res) {
+    var body = req.body;
+    body.id ? api.modifySite(parseInt(body.id), body.name, body.url, body.remark, function(result) {
+        res.json(result);
+    }) : api.addSite(parseInt(body.group), body.name, body.url, body.remark, function(result) {
+        res.json(result);
+    });
+});
+
+router.get('/delgroup', function(req, res) {
+    api.deleteGroup(parseInt(req.query.id), function(result) {
+        res.json(result);
+    });
+});
+
+router.get('/delsite', function(req, res) {
+    api.deleteSite(parseInt(req.query.id), function(result) {
+        res.json(result);
+    });
+});
+
+router.get('/delsites', function(req, res) {
+    api.deleteSites(parseInt(req.query.group), function(result) {
+        res.json(result);
+    });
 });
 
 module.exports = router;
