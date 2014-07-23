@@ -30,13 +30,13 @@ CREATE TABLE `note_recycle` (
   `group` int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `content` varchar(500) DEFAULT NULL,
-  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `modify_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `signature` varchar(10) DEFAULT NULL,
-  `delete_date` datetime DEFAULT NULL,
+  `ctime` datetime DEFAULT NULL,
+  `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dtime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-22 20:39:14
+-- Dump completed on 2014-07-23 18:15:40

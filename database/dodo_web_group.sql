@@ -18,29 +18,28 @@ USE `dodo`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `note_type`
+-- Table structure for table `web_group`
 --
 
-DROP TABLE IF EXISTS `note_type`;
+DROP TABLE IF EXISTS `web_group`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `note_type` (
+CREATE TABLE `web_group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
+  `name` varchar(10) DEFAULT NULL,
   `ctime` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `note_type`
+-- Dumping data for table `web_group`
 --
 
-LOCK TABLES `note_type` WRITE;
-/*!40000 ALTER TABLE `note_type` DISABLE KEYS */;
-INSERT INTO `note_type` VALUES (1,'默认类型','2014-07-22 10:10:15'),(4,'test_type','2014-07-23 11:59:35');
-/*!40000 ALTER TABLE `note_type` ENABLE KEYS */;
+LOCK TABLES `web_group` WRITE;
+/*!40000 ALTER TABLE `web_group` DISABLE KEYS */;
+INSERT INTO `web_group` VALUES (1,'名站','2014-07-23 10:19:52'),(2,'视频','2014-07-23 10:19:52'),(9,'体育','2014-07-23 10:19:52'),(3,'小说','2014-07-23 10:19:52'),(4,'音乐','2014-07-23 10:19:52'),(5,'游戏','2014-07-23 10:19:52'),(6,'购物','2014-07-23 10:19:52'),(7,'新闻','2014-07-23 10:19:52'),(8,'邮箱','2014-07-23 10:19:52'),(10,'社区','2014-07-23 10:19:52'),(11,'交友','2014-07-23 10:19:52'),(12,'团购','2014-07-23 10:19:52'),(13,'生活','2014-07-23 10:19:52'),(14,'旅游','2014-07-23 10:19:52'),(15,'银行','2014-07-23 10:19:52'),(16,'查询','2014-07-23 10:19:52'),(17,'招聘','2014-07-23 10:19:52'),(18,'地图','2014-07-23 10:19:52'),(19,'军事','2014-07-23 10:19:52'),(21,'门户','2014-07-23 10:19:52');
+/*!40000 ALTER TABLE `web_group` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-23 18:15:37
+-- Dump completed on 2014-07-23 18:15:40

@@ -28,10 +28,10 @@ CREATE TABLE `note_group` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `type` int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
-  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `ctime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `note_group` (
 
 LOCK TABLES `note_group` WRITE;
 /*!40000 ALTER TABLE `note_group` DISABLE KEYS */;
-INSERT INTO `note_group` VALUES (1,1,'默认分组','2014-07-21 05:20:04');
+INSERT INTO `note_group` VALUES (1,1,'默认分组','2014-07-21 13:20:04'),(4,4,'xyz','2014-07-23 12:04:13');
 /*!40000 ALTER TABLE `note_group` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-22 20:39:12
+-- Dump completed on 2014-07-23 18:15:42
