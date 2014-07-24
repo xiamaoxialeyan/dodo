@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS `photo`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `photo` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `gid` int(10) unsigned NOT NULL,
+  `gallary` int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `desc` varchar(100) DEFAULT NULL,
   `path` varchar(100) DEFAULT NULL,
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-23 18:15:39
+-- Dump completed on 2014-07-24 17:47:24

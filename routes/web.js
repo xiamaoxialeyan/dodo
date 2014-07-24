@@ -1,6 +1,6 @@
 var express = require('express'),
     router = express.Router(),
-    api = require('../web/web');
+    api = require('../api/web');
 
 /* web services. */
 router.get('/', function(req, res) {
@@ -48,7 +48,7 @@ router.post('/group', function(req, res) {
 
 router.post('/site', function(req, res) {
     var body = req.body;
-    body.id ? api.modifySite(parseInt(body.id), body.name, body.url, body.remark, function(result) {
+    body.id ? api.modifySite(parseInt(body.id), parseInt(body.group), body.name, body.url, body.remark, function(result) {
         res.json(result);
     }) : api.addSite(parseInt(body.group), body.name, body.url, body.remark, function(result) {
         res.json(result);
@@ -61,6 +61,12 @@ router.get('/delgroup', function(req, res) {
     });
 });
 
+router.get('/cleargroup', function(req, res) {
+    api.clearGroup(parseInt(req.query.id), function(result) {
+        res.json(result);
+    });
+});
+
 router.get('/delsite', function(req, res) {
     api.deleteSite(parseInt(req.query.id), function(result) {
         res.json(result);
@@ -68,7 +74,7 @@ router.get('/delsite', function(req, res) {
 });
 
 router.get('/delsites', function(req, res) {
-    api.deleteSites(parseInt(req.query.group), function(result) {
+    api.delSites(req.query.ids, function(result) {
         res.json(result);
     });
 });

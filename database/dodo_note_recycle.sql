@@ -26,7 +26,6 @@ DROP TABLE IF EXISTS `note_recycle`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `note_recycle` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `type` int(10) unsigned NOT NULL,
   `group` int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `content` varchar(500) DEFAULT NULL,
@@ -36,7 +35,7 @@ CREATE TABLE `note_recycle` (
   `dtime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-23 18:15:40
+-- Dump completed on 2014-07-24 17:47:24

@@ -1,6 +1,6 @@
 var express = require('express'),
     router = express.Router(),
-    api = require('../note/note');
+    api = require('../api/note');
 
 /* note services. */
 router.get('/', function(req, res) {
@@ -56,7 +56,7 @@ router.post('/notetype', function(req, res) {
 
 router.post('/notegroup', function(req, res) {
     var body = req.body;
-    body.id ? api.modifyNoteGroup(parseInt(body.id), body.name, function(result) {
+    body.id ? api.modifyNoteGroup(parseInt(body.id), parseInt(body.type), body.name, function(result) {
         res.json(result);
     }) : api.addNoteGroup(parseInt(body.type), body.name, function(result) {
         res.json(result);
@@ -65,7 +65,7 @@ router.post('/notegroup', function(req, res) {
 
 router.post('/note', function(req, res) {
     var body = req.body;
-    body.id ? api.modifyNote(parseInt(body.id), body.name, body.content, body.signature, function(result) {
+    body.id ? api.modifyNote(parseInt(body.id), parseInt(body.group), body.name, body.content, body.signature, function(result) {
         res.json(result);
     }) : api.addNote(parseInt(body.group), body.name, body.content, body.signature, function(result) {
         res.json(result);
@@ -84,6 +84,12 @@ router.get('/delnotegroup', function(req, res) {
     });
 });
 
+router.get('/clearnotegroup', function(req, res) {
+    api.clearNoteGroup(parseInt(req.query.id), function(result) {
+        res.json(result);
+    });
+});
+
 router.get('/delnote', function(req, res) {
     api.deleteNote(parseInt(req.query.id), function(result) {
         res.json(result);
@@ -91,7 +97,7 @@ router.get('/delnote', function(req, res) {
 });
 
 router.get('/delnotes', function(req, res) {
-    api.deleteNotes(parseInt(req.query.group), function(result) {
+    api.deleteNotes(req.query.ids, function(result) {
         res.json(result);
     });
 });

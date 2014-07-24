@@ -77,6 +77,16 @@ function delete_result(err, id, result, cb, n) {
     cb && cb(r);
 }
 
+function def_group(id, cb) {
+    cb && cb({
+        status: status.FAILED,
+        message: '不能删除默认分组',
+        data: {
+            id: id
+        }
+    });
+}
+
 var api = {
     getGroups: function(cb) {
         db.query("select * from web_group", function(err, data) {
@@ -89,23 +99,23 @@ var api = {
             db.query("select * from web_group where `id`=?", id, function(err, data) {
                 query_result(err, id, data, cb, 0);
             });
-        }
-        id ? get() : param_error(cb);
+        };
+        !!id ? get() : param_error(cb);
+    },
+
+    findGroup: function(id, fn, cb) {
+        this.getGroup(id, function(result) {
+            isExist(result) ? fn.call(api) : no_exist(id, cb, 0);
+        });
     },
 
     getSites: function(group, cb) {
-        function find() {
-            api.getGroup(group, function(result) {
-                isExist(result) ? get() : no_exist(group, cb, 0);
-            });
-        }
-        group ? find() : param_error(cb);
-
         function get() {
             db.query("select * from web_site where `group`=?", group, function(err, data) {
                 query_result(err, null, data, cb, 1);
             });
-        }
+        };
+        !!group ? this.findGroup(group, get, cb) : param_error(cb);
     },
 
     getSite: function(id, cb) {
@@ -113,13 +123,19 @@ var api = {
             db.query("select * from web_site where `id`=?", id, function(err, data) {
                 query_result(err, id, data, cb, 1);
             });
-        }
-        id ? get() : param_error(cb);
+        };
+        !!id ? get() : param_error(cb);
     },
 
     getSiteAll: function(cb) {
         db.query("select * from web_site", function(err, data) {
             query_result(err, null, data, cb, 1);
+        });
+    },
+
+    findSite: function(id, fn, cb) {
+        this.getSite(id, function(result) {
+            isExist(result) ? fn.call(api) : no_exist(id, cb, 1);
         });
     },
 
@@ -133,45 +149,31 @@ var api = {
     },
 
     addSite: function(group, name, url, remark, cb) {
-        function find() {
-            api.getGroup(group, function(result) {
-                isExist(result) ? insert() : no_exist(group, cb, 0);
-            });
-        }
-        group && name ? find() : param_error(cb);
-
         function insert() {
             db.query("insert into web_site set `group`=?,`name`=?,`url`=?,`remark`=?,ctime=now()", [group, name, url, remark], function(err, result) {
                 insert_result(err, result, cb, 1);
             });
-        }
+        };
+        !!group && name ? this.findGroup(group, insert, cb) : param_error(cb);
     },
 
     modifyGroup: function(id, name, cb) {
-        function find() {
-            api.getGroup(id, function(result) {
-                isExist(result) ? update() : no_exist(id, cb, 0);
-            });
-        }
-        id && name ? find() : param_error(cb);
-
         function update() {
             db.query("update web_group set ??=? where ??=?", ['name', name, 'id', id], function(err, result) {
                 update_result(err, id, result, cb, 0);
             });
-        }
+        };
+        !!id && name ? this.findGroup(id, update, cb) : param_error(cb);
     },
 
-    modifySite: function(id, name, url, remark, cb) {
-        function find() {
-            api.getSite(id, function(result) {
-                isExist(result) ? update() : no_exist(id, cb, 1);
-            });
-        }
-        id && (name === undefined || url === undefined || remark === undefined) ? find() : param_error(cb);
+    modifySite: function(id, group, name, url, remark, cb) {
+        !!id && (!!group || name !== undefined || url !== undefined || remark !== undefined) ? this.findSite(id, function() {
+            !!group ? this.findGroup(group, update, cb) : update();
+        }, cb) : param_error(cb);
 
         function update() {
             var settings = {};
+            !!group && (settings['group'] = group);
             name !== undefined && (settings['name'] = name);
             url !== undefined && (settings['url'] = url);
             remark !== undefined && (settings['remark'] = remark);
@@ -183,12 +185,12 @@ var api = {
     },
 
     deleteGroup: function(id, cb) {
-        function find() {
-            api.getGroup(id, function(result) {
-                isExist(result) ? del() : no_exist(id, cb, 0);
-            });
+        if (id === 1) {
+            def_group(id, cb);
+            return;
         }
-        id ? find() : param_error(cb);
+
+        !!id ? this.findGroup(id, del, cb) : param_error(cb);
 
         function del() {
             db.query("delete from web_group where ??=?", ['id', id], function(err, result) {
@@ -197,34 +199,26 @@ var api = {
         }
     },
 
-    deleteSite: function(id, cb) {
-        function find() {
-            api.getSite(id, function(result) {
-                isExist(result) ? del() : no_exist(id, cb, 1);
+    clearGroup: function(id, cb) {
+        function clear() {
+            db.query("delete from web_site where ??=?", ['group', id], function(err, result) {
+                delete_result(err, id, result, cb, 1);
             });
-        }
-        id ? find() : param_error(cb);
+        };
+        !!id ? this.findGroup(id, clear, cb) : param_error(cb);
+    },
 
+    deleteSite: function(id, cb) {
         function del() {
             db.query("delete from web_site where ??=?", ['id', id], function(err, result) {
                 delete_result(err, id, result, cb, 1);
             });
-        }
+        };
+        !!id ? this.findSite(id, del, cb) : param_error(cb);
     },
 
-    deleteSites: function(group, cb) {
-        function find() {
-            api.getGroup(group, function(result) {
-                isExist(result) ? clear() : no_exist(group, cb, 0);
-            });
-        }
-        group ? find() : param_error(cb);
+    delSites: function(ids, cb) {
 
-        function clear() {
-            db.query("delete from web_site where ??=?", ['group', group], function(err, result) {
-                delete_result(err, group, result, cb, 1);
-            });
-        }
     }
 }
 

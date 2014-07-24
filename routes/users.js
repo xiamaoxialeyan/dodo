@@ -1,6 +1,6 @@
 var express = require('express'),
     router = express.Router(),
-    user = require('../users/user');
+    user = require('../api/user');
 
 /* users services. */
 router.post('/login', function(req, res) {

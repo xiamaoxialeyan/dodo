@@ -26,7 +26,6 @@ DROP TABLE IF EXISTS `note`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `note` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `type` int(10) unsigned NOT NULL,
   `group` int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `content` varchar(500) DEFAULT NULL,
@@ -35,7 +34,7 @@ CREATE TABLE `note` (
   `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,7 +43,6 @@ CREATE TABLE `note` (
 
 LOCK TABLES `note` WRITE;
 /*!40000 ALTER TABLE `note` DISABLE KEYS */;
-INSERT INTO `note` VALUES (1,1,1,'test_note0','<a>ffffffffffff</a>','luoying','2014-07-22 10:07:49','2014-07-21 07:50:39'),(2,1,1,'test_note1','<form action=\"/note/note\" method=\"post\"><select name=\"id\"><option value=\"1\">test_note0</option><option value=\"2\">test_note</option><option value=\"3\">test_note2</option></select><input name=\"name\"><textarea name=\"content\"></textarea><input name=\"signature\"><input type=\"submit\" value=\"提交\"></form>','liyanyan','2014-07-23 10:38:30','2014-07-23 02:38:30'),(5,1,1,'YYYYYYYYYYY','<a>ffffffffffff</a>','luoying','2014-07-23 10:54:39','2014-07-23 02:55:15'),(6,4,4,'test','luolinan','luolinan','2014-07-23 12:07:26','2014-07-23 04:11:55');
 /*!40000 ALTER TABLE `note` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -60,7 +58,7 @@ DELIMITER ;;
 after delete on note
 for each row
 begin
-insert into note_recycle set id=old.id,type=old.type,`group`=old.group,name=old.name,content=old.content,signature=old.signature,ctime=old.ctime,mtime=old.mtime,dtime=now();
+insert into note_recycle set id=old.id,`group`=old.group,name=old.name,content=old.content,signature=old.signature,ctime=old.ctime,mtime=old.mtime,dtime=now();
 end */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -77,4 +75,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-23 18:15:41
+-- Dump completed on 2014-07-24 17:47:26

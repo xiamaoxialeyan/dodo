@@ -1,8 +1,12 @@
 /******api for gallary service*******/
 
 var db = require('../db'),
-    status = require('../status.json');
+    fs = require('fs'),
+    formidable = require('formidable'),
+    status = require('../status.json'),
+    utils = require('../utils');
 
+var uploadDir = './uploads/photo/';
 var ns = ['画廊', '照片'];
 
 function param_error(cb) {
@@ -77,8 +81,43 @@ function delete_result(err, id, result, cb, n) {
     cb && cb(r);
 }
 
-var api = {
+function upload_result(err, path, cb) {
+    var r = {};
+    r.status = err ? status.FAILED : status.SUCCESS;
+    r.message = err ? '上传图片失败' : '上传图片成功';
+    r.path = path;
+    cb && cb(r);
+}
 
+function ext(type) {
+    return {
+        'image/pjpeg': 'jpg',
+        'image/jpeg': 'jpg',
+        'image/png': 'png',
+        'image/x-png': 'png',
+        'image/gif': 'gif',
+        'image/bmp': 'bmp'
+    }[type] || 'png';
+}
+
+var api = {
+    upload: function(req, cb) {
+        var form = new formidable.IncomingForm({
+            uploadDir: './temp'
+        });
+
+        form.parse(req, function(err, fields, files) {
+            err ? upload_result(err, null, cb) : save(files.photo);
+        });
+
+        function save(file) {
+            var fname = utils.formatDate(new Date(), 'yyyyMMddhhmmss') + '.' + ext(file.type);
+            fs.rename(file.path, uploadDir + fname, function(err) {
+                upload_result(err, '/photo/' + fname, cb);
+                fs.unlink(file.path, function(err) {});
+            });
+        }
+    }
 }
 
 module.exports = api;
