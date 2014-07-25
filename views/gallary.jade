@@ -13,7 +13,7 @@ block content
 				input(name="desc")
 		div
 			label photo
-				input#photo(type="file",name="photo",accept="image/jpeg,image/jpg,image/png,image/gif,image/bmp")
+				input#photo(type="file",name="photo[]",multiple,accept="image/jpeg,image/jpg,image/png,image/gif,image/bmp")
 		div
 			label
 				input(type = "submit", value = "提交")
@@ -24,7 +24,7 @@ block footer
 		photo=document.getElementById('photo'),
 		size=5*1024*1024,
 		filters=['image/jpeg','image/jpg','image/png','image/gif','image/bmp'],
-		file=null;
+		files=null;
 
 		form.onsubmit=function(evt){
 			evt.preventDefault();
@@ -43,17 +43,27 @@ block footer
 		}
 
 		photo.onchange=function(evt){
-			file=evt.target.files[0];
+			files=evt.target.files;
 		}
 
 		function upload(cb){
-			if(!check())return;
+			//if(!check())return;
+			var fs=filter(files);
+			if(!fs.length){
+				alert('无符合要求的上传文件');
+				return;
+			}
 
 			var xhr = new XMLHttpRequest();
-			xhr.open('post', '/gallary/upload', true);
+			xhr.open('post', '/gallary/uploads', true);
 
 			var fm=new FormData();
-			fm.append('photo',file);
+			//fm.append('photo',file);
+
+			fs.forEach(function(f){
+				fm.append('photo[]',f);
+			});
+
 			fm.append('gallary',form.gallary.value);
 			xhr.send(fm);
 
@@ -62,12 +72,13 @@ block footer
 			}, false);
 			xhr.onreadystatechange = function() {
 				if (xhr.readyState == 4 && xhr.status == 200) {
-					var res=JSON.parse(xhr.responseText);
-					if(res.path){
-						cb(res.path);
-						return;
-					}
-					alert('上传图片失败');
+					//- var res=JSON.parse(xhr.responseText);
+					//- if(res.path){
+					//- 	cb(res.path);
+					//- 	return;
+					//- }
+					//- alert('上传图片失败');
+					alert(xhr.responseText);
 				}
 			}
 		}
@@ -88,4 +99,20 @@ block footer
 				return false;
 			}
 			return true;
+		}
+
+		function filter(){
+			var fs=[];
+			for(var i=0,l=files.length;i<l;i++){
+				var file=files[i],type=file.type;
+				type||(/\.(\w+)$/.test(file.name)&&(type='image/'+RegExp.$1));//IE  file.type='',需要补上
+				if(filters.indexOf(type)==-1)
+					return;
+
+				if(file.size>size)
+					return;
+
+				fs.push(file);
+			};
+			return fs;
 		}

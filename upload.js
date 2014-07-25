@@ -38,7 +38,7 @@ function checkSize(file, maxSize) {
 }
 
 function async(dir, file, cb) {
-    var fname = utils.formatDate(new Date(), 'yyyyMMddhhmmssS') + '.' + ext(file.type),
+    var fname = utils.formatDate(new Date(), 'yyyyMMddhhmmssS') + Math.ceil(Math.random() * 10000) + '.' + ext(file.type),
         fp = dir + fname;
     fs.rename(file.path, fp, function(err) {
         cb(err, err ? null : fp.slice(9));
@@ -124,7 +124,7 @@ module.exports = {
         });
 
         form.parse(req, function(err, fields, files) {
-            err ? result(err, null, callback) : (reserve(opts.dir, opts.dir_fix, fields), save(files, opts, callback));
+            err ? result(err, null, callback) : (opts.dir = reserve(opts.dir, opts.dir_fix, fields), save(files, opts, callback));
         });
     },
 
@@ -137,7 +137,7 @@ module.exports = {
         });
 
         form.parse(req, function(err, fields, files) {
-            err ? result(err, null, callback) : (reserve(opts.dir, opts.dir_fix, fields), saves(files, opts, callback));
+            err ? result(err, null, callback) : (opts.dir = reserve(opts.dir, opts.dir_fix, fields), saves(files, opts, callback));
         });
     }
 }
