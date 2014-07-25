@@ -9,76 +9,58 @@ router.get('/', function(req, res) {
     });
 });
 
+router.get('/upload', function(req, res) {
+    res.render('upload');
+});
+
 router.post('/upload', function(req, res) {
-    api.upload(req, function(result) {
-        res.json(result);
-    });
+    api.upload(req, res.json.bind(res));
+});
+
+router.post('/uploads', function(req, res) {
+    api.uploads(req, res.json.bind(res));
 });
 
 router.get('/gallarys', function(req, res) {
-    api.getGallarys(function(result) {
-        res.json(result);
-    });
+    api.getGallarys(res.json.bind(res));
 });
 
 router.get('/gallary', function(req, res) {
-    api.getGallary(parseInt(req.query.id), function(result) {
-        res.json(result);
-    });
+    api.getGallary(parseInt(req.query.id), res.json.bind(res));
 });
 
 router.get('/photos', function(req, res) {
-    api.getPhotos(parseInt(req.query.gallary), function(result) {
-        res.json(result);
-    });
+    api.getPhotos(parseInt(req.query.gallary), res.json.bind(res));
 });
 
 router.get('/photo', function(req, res) {
-    api.getPhoto(parseInt(req.query.id), function(result) {
-        res.json(result);
-    });
+    api.getPhoto(parseInt(req.query.id), res.json.bind(res));
 });
 
 router.post('/gallary', function(req, res) {
     var body = req.body;
-    body.id ? api.modifyGallary(parseInt(body.id), body.name, body.desc, body.cover, body.supports, function(result) {
-        res.json(result);
-    }) : api.addGallary(body.name, body.desc, body.cover, body.supports, function(result) {
-        res.json(result);
-    });
+    body.id ? api.modifyGallary(parseInt(body.id), body.name, body.desc, body.cover, body.supports, res.json.bind(res)) : api.addGallary(body.name, body.desc, res.json.bind(res));
 });
 
 router.post('/photo', function(req, res) {
     var body = req.body;
-    body.id ? api.modifyGallary(parseInt(body.id), parseInt(body.gallary), body.name, body.desc, body.path, body.supports, function(result) {
-        res.json(result);
-    }) : api.addGallary(parseInt(body.gallary), body.name, body.desc, body.path, body.supports, function(result) {
-        res.json(result);
-    });
+    body.id ? api.modifyPhoto(parseInt(body.id), parseInt(body.gallary), body.name, body.desc, body.supports, res.json.bind(res)) : api.addPhoto(parseInt(body.gallary), body.name, body.desc, body.path, res.json.bind(res));
 });
 
 router.get('/delgallary', function(req, res) {
-    api.deleteGallary(parseInt(req.query.id), function(result) {
-        res.json(result);
-    });
+    api.deleteGallary(parseInt(req.query.id), res.json.bind(res));
 });
 
 router.get('/cleargallary', function(req, res) {
-    api.clearGallary(parseInt(req.quey.id), function(result) {
-        res.json(result);
-    });
+    api.clearGallary(parseInt(req.quey.id), res.json.bind(res));
 });
 
 router.get('/delphoto', function(req, res) {
-    api.deletePhoto(parseInt(req.query.id), function(result) {
-        res.json(result);
-    });
+    api.deletePhoto(parseInt(req.query.id), res.json.bind(res));
 });
 
 router.get('/delphotos', function(req, res) {
-    api.deletePhotos(req.query.ids, function(result) {
-        res.json(result);
-    });
+    api.deletePhotos(req.query.ids, res.json.bind(res));
 });
 
 module.exports = router;

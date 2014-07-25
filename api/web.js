@@ -60,7 +60,7 @@ function insert_result(err, result, cb, n) {
 function update_result(err, id, result, cb, n) {
     var r = {};
     r.status = err ? status.FAILED : status.SUCCESS;
-    r.message = '修改' + ns[n] + ((err || !result.changedRows) ? '失败' : '成功');
+    r.message = !result.changedRows ? '无修改数据' : ('修改' + ns[n] + (err ? '失败' : '成功'));
     r.data = {
         id: id
     };
@@ -70,7 +70,7 @@ function update_result(err, id, result, cb, n) {
 function delete_result(err, id, result, cb, n) {
     var r = {};
     r.status = err ? status.FAILED : status.SUCCESS;
-    r.message = '删除' + ns[n] + ((err || !result.affectedRows) ? '失败' : '成功');
+    r.message = !result.affectedRows ? '无删除数据' : ('删除' + ns[n] + (err ? '失败' : '成功'));
     r.data = {
         id: id
     };
@@ -125,12 +125,6 @@ var api = {
             });
         };
         !!id ? get() : param_error(cb);
-    },
-
-    getSiteAll: function(cb) {
-        db.query("select * from web_site", function(err, data) {
-            query_result(err, null, data, cb, 1);
-        });
     },
 
     findSite: function(id, fn, cb) {
@@ -217,8 +211,13 @@ var api = {
         !!id ? this.findSite(id, del, cb) : param_error(cb);
     },
 
-    delSites: function(ids, cb) {
-
+    deleteSites: function(ids, cb) {
+        function del() {
+            db.query("delete from web_site where id in (" + ids + ")", function(err, result) {
+                delete_result(err, ids, result, cb, 1);
+            });
+        };
+        !!ids ? del() : param_error(cb);
     }
 }
 

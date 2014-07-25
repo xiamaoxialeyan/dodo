@@ -8,75 +8,45 @@ router.get('/', function(req, res) {
 });
 
 router.get('/groups', function(req, res) {
-    api.getGroups(function(result) {
-        res.json(result);
-    });
+    api.getGroups(res.json.bind(res));
 });
 
 router.get('/group', function(req, res) {
-    api.getGroup(parseInt(req.query.id), function(result) {
-        res.json(result);
-    });
+    api.getGroup(parseInt(req.query.id), res.json.bind(res));
 });
 
 router.get('/sites', function(req, res) {
-    api.getSites(parseInt(req.query.group), function(result) {
-        res.json(result);
-    });
+    api.getSites(parseInt(req.query.group), res.json.bind(res));
 });
 
 router.get('/site', function(req, res) {
-    api.getSite(parseInt(req.query.id), function(result) {
-        res.json(result);
-    });
-});
-
-router.get('/siteall', function(req, res) {
-    api.getSiteAll(function(result) {
-        res.json(result);
-    });
+    api.getSite(parseInt(req.query.id), res.json.bind(res));
 });
 
 router.post('/group', function(req, res) {
     var body = req.body;
-    body.id ? api.modifyGroup(parseInt(body.id), body.name, function(result) {
-        res.json(result);
-    }) : api.addGroup(body.name, function(result) {
-        res.json(result);
-    });
+    body.id ? api.modifyGroup(parseInt(body.id), body.name, res.json.bind(res)) : api.addGroup(body.name, res.json.bind(res));
 });
 
 router.post('/site', function(req, res) {
     var body = req.body;
-    body.id ? api.modifySite(parseInt(body.id), parseInt(body.group), body.name, body.url, body.remark, function(result) {
-        res.json(result);
-    }) : api.addSite(parseInt(body.group), body.name, body.url, body.remark, function(result) {
-        res.json(result);
-    });
+    body.id ? api.modifySite(parseInt(body.id), parseInt(body.group), body.name, body.url, body.remark, res.json.bind(res)) : api.addSite(parseInt(body.group), body.name, body.url, body.remark, res.json.bind(res));
 });
 
 router.get('/delgroup', function(req, res) {
-    api.deleteGroup(parseInt(req.query.id), function(result) {
-        res.json(result);
-    });
+    api.deleteGroup(parseInt(req.query.id), res.json.bind(res));
 });
 
 router.get('/cleargroup', function(req, res) {
-    api.clearGroup(parseInt(req.query.id), function(result) {
-        res.json(result);
-    });
+    api.clearGroup(parseInt(req.query.id), res.json.bind(res));
 });
 
 router.get('/delsite', function(req, res) {
-    api.deleteSite(parseInt(req.query.id), function(result) {
-        res.json(result);
-    });
+    api.deleteSite(parseInt(req.query.id), res.json.bind(res));
 });
 
 router.get('/delsites', function(req, res) {
-    api.delSites(req.query.ids, function(result) {
-        res.json(result);
-    });
+    api.deleteSites(req.query.ids, res.json.bind(res));
 });
 
 module.exports = router;

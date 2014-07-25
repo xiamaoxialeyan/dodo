@@ -1,0 +1,91 @@
+extends layout
+
+block content
+	form#formbox(action="/gallary/photo",enctype="multipart/form-data",method="post")
+		div
+			label gallary
+				input(name="gallary")
+		div
+			label name
+				input(name="name")
+		div
+			label desc
+				input(name="desc")
+		div
+			label photo
+				input#photo(type="file",name="photo",accept="image/jpeg,image/jpg,image/png,image/gif,image/bmp")
+		div
+			label
+				input(type = "submit", value = "提交")
+
+block footer
+	script(type = "text/javascript").
+		var form=document.getElementById('formbox'),
+		photo=document.getElementById('photo'),
+		size=5*1024*1024,
+		filters=['image/jpeg','image/jpg','image/png','image/gif','image/bmp'],
+		file=null;
+
+		form.onsubmit=function(evt){
+			evt.preventDefault();
+
+			upload(function(path){
+				var xhr = new XMLHttpRequest();
+				xhr.open('post', form.action, true);
+				xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+				xhr.send('gallary=' + form.gallary.value + '&name=' + form.name.value + '&desc=' + form.desc.value + '&path=' + path);
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState == 4 && xhr.status == 200) {
+						alert(xhr.responseText);
+					}
+				}
+			});
+		}
+
+		photo.onchange=function(evt){
+			file=evt.target.files[0];
+		}
+
+		function upload(cb){
+			if(!check())return;
+
+			var xhr = new XMLHttpRequest();
+			xhr.open('post', '/gallary/upload', true);
+
+			var fm=new FormData();
+			fm.append('photo',file);
+			fm.append('gallary',form.gallary.value);
+			xhr.send(fm);
+
+			xhr.upload.addEventListener("progress", function(e) {
+				console.log(e.loaded, e.total);
+			}, false);
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState == 4 && xhr.status == 200) {
+					var res=JSON.parse(xhr.responseText);
+					if(res.path){
+						cb(res.path);
+						return;
+					}
+					alert('上传图片失败');
+				}
+			}
+		}
+
+		function check(){
+			if(!file){
+				alert('请选择图片');
+				return false;
+			}
+
+			if(filters.indexOf(file.type)==-1){
+				alert('不是图片');
+				return false;
+			}
+
+			if(file.size>size){
+				alert('图片太大');
+				return false;
+			}
+			return true;
+		}

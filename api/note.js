@@ -60,7 +60,7 @@ function insert_result(err, result, cb, n) {
 function update_result(err, id, result, cb, n) {
     var r = {};
     r.status = err ? status.FAILED : status.SUCCESS;
-    r.message = '修改' + ns[n] + ((err || !result.changedRows) ? '失败' : '成功');
+    r.message = !result.changedRows ? '无修改数据' : ('修改' + ns[n] + (err ? '失败' : '成功'));
     r.data = {
         id: id
     };
@@ -70,7 +70,7 @@ function update_result(err, id, result, cb, n) {
 function delete_result(err, id, result, cb, n) {
     var r = {};
     r.status = err ? status.FAILED : status.SUCCESS;
-    r.message = '删除' + ns[n] + ((err || !result.affectedRows) ? '失败' : '成功');
+    r.message = !result.affectedRows ? '无删除数据' : ('删除' + ns[n] + (err ? '失败' : '成功'));
     r.data = {
         id: id
     };
@@ -80,7 +80,7 @@ function delete_result(err, id, result, cb, n) {
 function recover_result(err, id, result, cb) {
     var r = {};
     r.status = err ? status.FAILED : status.SUCCESS;
-    r.message = (err || !result.affectedRows) ? '还原记事失败' : '还原记事成功';
+    r.message = !result.affectedRows ? '无还原记事' : (err ? '还原记事失败' : '还原记事成功');
     id && (r.data = {
         id: id
     });
@@ -285,9 +285,9 @@ var api = {
         !!id ? this.findNote(id, del, cb) : param_error(cb);
     },
 
-    delNotes: function(ids, cb) {
+    deleteNotes: function(ids, cb) {
         function del() {
-            db.query("delete from note where id in (?)", ids, function(err, result) {
+            db.query("delete from note where id in (" + ids + ")", function(err, result) {
                 delete_result(err, ids, result, cb, 2);
             });
         };
