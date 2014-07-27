@@ -1,5 +1,6 @@
 var express = require('express'),
     router = express.Router(),
+    multipart = require('multipart'),
     api = require('../api/gallary');
 
 /* gallary services. */
@@ -13,12 +14,17 @@ router.get('/upload', function(req, res) {
     res.render('upload');
 });
 
-router.post('/upload', function(req, res) {
-    api.upload(req, res.json.bind(res));
+router.post('/upload', multipart({
+    uploadDir: './temp'
+}), function(req, res) {
+    api.upload(req.body.gallary, req.files['photo'], res.json.bind(res));
 });
 
-router.post('/uploads', function(req, res) {
-    api.uploads(req, res.json.bind(res));
+router.post('/uploads', multipart({
+    uploadDir: './temp',
+    multiples: true
+}), function(req, res) {
+    api.upload(req.body.gallary, req.files['photo[]'], res.json.bind(res));
 });
 
 router.get('/gallarys', function(req, res) {
@@ -61,6 +67,17 @@ router.get('/delphoto', function(req, res) {
 
 router.get('/delphotos', function(req, res) {
     api.deletePhotos(req.query.ids, res.json.bind(res));
+});
+
+router.use(function(err, req, res, next) {
+    if (err.upload) {
+        res.json({
+            message: '上传文件失败',
+            path: null
+        });
+        return;
+    }
+    next(err);
 });
 
 module.exports = router;

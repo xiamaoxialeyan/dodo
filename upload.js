@@ -1,11 +1,9 @@
 var fs = require('fs'),
-    formidable = require('formidable'),
     utils = require('./utils');
 
 function getOptions(opts) {
     opts || (opts = {});
     opts.dir || (opts.dir = './uploads');
-    opts.tempDir || (opts.tempDir = './temp');
     opts.maxSize || (opts.maxSize = 2 * 1024 * 1024);
     /\/$/.test(opts.dir) || (opts.dir += '/');
     return opts;
@@ -20,13 +18,6 @@ function ext(type) {
         'image/x-png': 'png',
         'image/x-icon': 'icon'
     }[type] || '';
-}
-
-function reserve(dir, fix, fields) {
-    fix && (dir = dir.replace(/\{([\s\S]*)\}/g, function(m, p) {
-        return fields[p];
-    }));
-    return dir;
 }
 
 function checkType(file, filters) {
@@ -47,8 +38,6 @@ function async(dir, file, cb) {
 }
 
 function save(file, opts, cb) {
-    for (var k in file) file = file[k];
-
     if (!checkType(file, opts.filters)) {
         type_error(cb);
         return;
@@ -65,25 +54,20 @@ function save(file, opts, cb) {
 }
 
 function saves(files, opts, cb) {
-    for (k in files) files = files[k];
-
-    var len = 0,
+    var len = files.length,
         c = 0,
         ps = [];
 
-    if (Array.isArray(files)) {
-        files.forEach(function(file) {
-            if (!checkType(file, opts.filters)) return;
-            if (!checkSize(file, opts.maxSize)) return;
+    files.forEach(function(file) {
+        if (!checkType(file, opts.filters)) return;
+        if (!checkSize(file, opts.maxSize)) return;
 
-            async(opts.dir, file, function(err, path) {
-                c++;
-                err || ps.push(path);
-                c == len && result(err, ps, cb);
-            });
-            len++;
+        async(opts.dir, file, function(err, path) {
+            c++;
+            err || ps.push(path);
+            c == len && result(err, ps, cb);
         });
-    }
+    });
     len || empty_error(cb);
 }
 
@@ -116,28 +100,13 @@ function empty_error(cb) {
 }
 
 module.exports = {
-    upload: function(req, opts, callback) {
+    upload: function(file, opts, callback) {
+        if (!file) {
+            empty_error(callback);
+            return;
+        }
+
         opts = getOptions(opts);
-
-        var form = new formidable.IncomingForm({
-            uploadDir: opts.tempDir
-        });
-
-        form.parse(req, function(err, fields, files) {
-            err ? result(err, null, callback) : (opts.dir = reserve(opts.dir, opts.dir_fix, fields), save(files, opts, callback));
-        });
-    },
-
-    uploads: function(req, opts, callback) {
-        opts = getOptions(opts);
-
-        var form = new formidable.IncomingForm({
-            uploadDir: opts.tempDir,
-            multiples: true
-        });
-
-        form.parse(req, function(err, fields, files) {
-            err ? result(err, null, callback) : (opts.dir = reserve(opts.dir, opts.dir_fix, fields), saves(files, opts, callback));
-        });
+        Array.isArray(file) ? saves(file, opts, callback) : save(file, opts, callback);
     }
 }

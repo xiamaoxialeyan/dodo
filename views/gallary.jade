@@ -13,7 +13,8 @@ block content
 				input(name="desc")
 		div
 			label photo
-				input#photo(type="file",name="photo[]",multiple,accept="image/jpeg,image/jpg,image/png,image/gif,image/bmp")
+				//- input#photo(type="file",name="photo[]",multiple,accept="image/jpeg,image/jpg,image/png,image/gif,image/bmp")
+				input#photo(type="file",name="photo",accept="image/jpeg,image/jpg,image/png,image/gif,image/bmp")
 		div
 			label
 				input(type = "submit", value = "提交")
@@ -55,14 +56,15 @@ block footer
 			}
 
 			var xhr = new XMLHttpRequest();
-			xhr.open('post', '/gallary/uploads', true);
+			xhr.open('post', '/gallary/upload', true);
+			//xhr.open('post', '/gallary/uploads', true);
 
 			var fm=new FormData();
-			//fm.append('photo',file);
+			fm.append('photo',fs[0]);
 
-			fs.forEach(function(f){
-				fm.append('photo[]',f);
-			});
+			//- fs.forEach(function(f){
+			//- 	fm.append('photo[]',f);
+			//- });
 
 			fm.append('gallary',form.gallary.value);
 			xhr.send(fm);

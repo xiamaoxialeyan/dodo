@@ -6,7 +6,7 @@ var db = require('../db'),
     uploader = require('../upload');
 
 var dir = './uploads/photo/',
-    def_cover = '/photo/cover.jpg',
+    def_cover = '/photo/cover.png',
     ns = ['画廊', '照片'];
 
 function param_error(cb) {
@@ -82,21 +82,9 @@ function delete_result(err, id, result, cb, n) {
 }
 
 var api = {
-    upload: function(req, cb) {
-        uploader.upload(req, {
-            dir: './uploads/photo/gallary_{gallary}',
-            tempDir: './temp',
-            dir_fix: true,
-            maxSize: 5 * 1024 * 1025,
-            filters: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/x-icon', 'image/x-png']
-        }, cb);
-    },
-
-    uploads: function(req, cb) {
-        uploader.uploads(req, {
-            dir: './uploads/photo/gallary_{gallary}',
-            tempDir: './temp',
-            dir_fix: true,
+    upload: function(gallary, file, cb) {
+        uploader.upload(file, {
+            dir: './uploads/photo/gallary_' + gallary,
             maxSize: 5 * 1024 * 1025,
             filters: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/x-icon', 'image/x-png']
         }, cb);
