@@ -10,15 +10,18 @@ router.get('/', function(req, res) {
     });
 });
 
+
 router.get('/upload', function(req, res) {
     res.render('upload');
 });
+
 
 router.post('/upload', multipart({
     uploadDir: './temp'
 }), function(req, res) {
     api.upload(req.body.gallary, req.files['photo'], res.json.bind(res));
 });
+
 
 router.post('/uploads', multipart({
     uploadDir: './temp',
@@ -27,47 +30,45 @@ router.post('/uploads', multipart({
     api.upload(req.body.gallary, req.files['photo[]'], res.json.bind(res));
 });
 
+
 router.get('/gallarys', function(req, res) {
     api.getGallarys(res.json.bind(res));
 });
 
-router.get('/gallary', function(req, res) {
+
+router.route('/gallary').get(function(req, res) {
     api.getGallary(parseInt(req.query.id), res.json.bind(res));
+}).post(function(req, res) {
+    var body = req.body;
+    api.addGallary(body.name, body.desc, res.json.bind(res));
+}).put(function(req, res) {
+    var body = req.body;
+    api.modifyGallary(parseInt(body.id), body.name, body.desc, body.cover, body.supports, res.json.bind(res));
+}).delete(function(req, res) {
+    api.deleteGallary(parseInt(req.body.id), res.json.bind(res));
 });
 
-router.get('/photos', function(req, res) {
+
+router.route('/photos').get(function(req, res) {
     api.getPhotos(parseInt(req.query.gallary), res.json.bind(res));
+}).delete(function(req, res) {
+    var body = req.body;
+    body.gallary ? api.clearGallary(parseInt(body.gallary), res.json.bind(res)) : api.deletePhotos(body.ids, res.json.bind(res));
 });
 
-router.get('/photo', function(req, res) {
+
+router.route('/photo').get(function(req, res) {
     api.getPhoto(parseInt(req.query.id), res.json.bind(res));
-});
-
-router.post('/gallary', function(req, res) {
+}).post(function(req, res) {
     var body = req.body;
-    body.id ? api.modifyGallary(parseInt(body.id), body.name, body.desc, body.cover, body.supports, res.json.bind(res)) : api.addGallary(body.name, body.desc, res.json.bind(res));
-});
-
-router.post('/photo', function(req, res) {
+    api.addPhoto(parseInt(body.gallary), body.name, body.desc, body.path, res.json.bind(res));
+}).put(function(req, res) {
     var body = req.body;
-    body.id ? api.modifyPhoto(parseInt(body.id), parseInt(body.gallary), body.name, body.desc, body.supports, res.json.bind(res)) : api.addPhoto(parseInt(body.gallary), body.name, body.desc, body.path, res.json.bind(res));
+    api.modifyPhoto(parseInt(body.id), parseInt(body.gallary), body.name, body.desc, body.supports, res.json.bind(res));
+}).delete(function(req, res) {
+    api.deletePhoto(parseInt(req.body.id), res.json.bind(res));
 });
 
-router.get('/delgallary', function(req, res) {
-    api.deleteGallary(parseInt(req.query.id), res.json.bind(res));
-});
-
-router.get('/cleargallary', function(req, res) {
-    api.clearGallary(parseInt(req.quey.id), res.json.bind(res));
-});
-
-router.get('/delphoto', function(req, res) {
-    api.deletePhoto(parseInt(req.query.id), res.json.bind(res));
-});
-
-router.get('/delphotos', function(req, res) {
-    api.deletePhotos(req.query.ids, res.json.bind(res));
-});
 
 router.use(function(err, req, res, next) {
     if (err.upload) {

@@ -12,6 +12,12 @@ block content
 			label
 				input(type = "radio", name = "method", value = "post")
 				|post
+			label
+				input(type = "radio", name = "method", value = "put")
+				|put
+			label
+				input(type = "radio", name = "method", value = "delete")
+				|delete
 		div
 			label 参数
 				textarea(name = "params")
@@ -28,7 +34,7 @@ block footer
 		form.onsubmit = function(evt) {
 			evt.preventDefault();
 
-			var url = '/gallary/' + form.api.value,
+			var url = '/note/' + form.api.value,
 			method = form.method.value,
 			params = form.params.value;
 
@@ -37,7 +43,8 @@ block footer
 			var xhr = new XMLHttpRequest();
 			xhr.open(method, url, true);
 
-			method == 'post' && xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			//- method == 'post' && 
+			xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			xhr.send(params);
 
 			xhr.onreadystatechange = function() {

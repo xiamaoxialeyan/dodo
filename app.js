@@ -26,6 +26,7 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/lib', express.static(path.join(__dirname, 'lib')));
 app.use('/photo', express.static(path.join(__dirname, 'uploads/photo')));
 
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/web', data);

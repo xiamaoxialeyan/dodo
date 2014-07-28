@@ -4,8 +4,19 @@ block header
 	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/note.css')
 
 block content
-	header
-		h3 记个事儿吧，就不会忘了！
+	section
+		header
+			h3 记个事儿吧，就不会忘了！
+		article
+			nav#cmdlist
+				a#addtype 新建类别
+				a#addgroup 新建记事本
+				a#addnote 新建记事
+			nav#typelist
+			#notebox
+				#grouplist
+				#notelist
 
 block footer
+	script(type = "text/javascript", src = "http://lib.dodo.com.cn:8080/My.js")
 	script(type = "text/javascript", src = "/static/scripts/note.js")

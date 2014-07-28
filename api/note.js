@@ -315,29 +315,12 @@ var api = {
         });
     },
 
-    recycle: function(id, cb) {
-        !!id ? this.findRecycle(id, recover, cb) : param_error(cb);
-
-        function recover(data) {
-            delete data.dtime;
-            db.query("insert into note set ?", data, function(err, result) {
-                err ? recover_result(err, id, result, cb) : del();
-            });
-        }
-
-        function del() {
-            db.query("delete from note_recycle where ??=?", ['id', id], function(err, result) {
-                recover_result(err, id, result, cb);
-            });
-        }
-    },
-
-    recycles: function(cb) {
+    recovers: function(cb) {
         this.getRecycles(function(result) {
-            isExist(result) ? recover(result.data) : recover_result({}, null, result, cb);
+            isExist(result) ? rec(result.data) : recover_result({}, null, result, cb);
         });
 
-        function recover(data) {
+        function rec(data) {
             var sql = [];
             for (var i = 0, l = data.length; i < l; i++) {
                 var d = data[i];
@@ -357,6 +340,23 @@ var api = {
         }
     },
 
+    recover: function(id, cb) {
+        !!id ? this.findRecycle(id, rec, cb) : param_error(cb);
+
+        function rec(data) {
+            delete data.dtime;
+            db.query("insert into note set ?", data, function(err, result) {
+                err ? recover_result(err, id, result, cb) : del();
+            });
+        }
+
+        function del() {
+            db.query("delete from note_recycle where ??=?", ['id', id], function(err, result) {
+                recover_result(err, id, result, cb);
+            });
+        }
+    },
+
     deleteRecycle: function(id, cb) {
         function del() {
             db.query("delete from note_recycle where ??=?", ['id', id], function(err, result) {
@@ -366,7 +366,7 @@ var api = {
         !!id ? this.findRecycle(id, del, cb) : param_error(cb);
     },
 
-    clearRecycles: function(cb) {
+    deleteRecycles: function(cb) {
         db.query("delete from note_recycle", function(err, result) {
             delete_result(err, null, result, cb, 3);
         });

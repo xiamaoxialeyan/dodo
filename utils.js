@@ -1,5 +1,4 @@
-var fs = require('fs'),
-    formidable = require('formidable');
+var fs = require('fs');
 
 module.exports = {
     formatDate: function(d, fmt) {
@@ -22,85 +21,6 @@ module.exports = {
             new RegExp("(" + k + ")").test(fmt) && (fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? v : ("00" + v).substr(("" + v).length)));
         }
         return fmt;
-    },
-
-    upload: function(req, opts, callback) {
-        opts || (opts = {});
-
-        opts.dir || (opts.dir = './uploads');
-        opts.tempDir || (opts.tempDir = './temp');
-        opts.maxSize || (opts.maxSize = 2 * 1024 * 1024);
-
-        /\/$/.test(opts.dir) || (opts.dir += '/');
-
-        var _ = this,
-            len = 0,
-            c = 0,
-            ps = [];
-
-        var form = new formidable.IncomingForm({
-            uploadDir: opts.tempDir,
-            multiples: true
-        });
-
-        form.parse(req, function(err, fields, files) {
-            err ? result(err, null, null, callback) : (reserve(fields), save(files));
-        });
-
-        function reserve(fields) {
-            opts.dir_fix && (opts.dir = opts.dir.replace(/\{([\s\S]*)\}/g, function(m, p) {
-                return fields[p];
-            }));
-        }
-
-        function save(files) {
-            for (k in files) {
-                var file = files[k];
-
-                if (Array.isArray(file)) {
-                    file.forEach(function(e) {
-                        check(e) && (len++, async(e));
-                    });
-                    continue;
-                }
-
-                check(file) && (len++, async(file));
-            }
-            len || result({}, null, callback);
-        }
-
-        function check(file) {
-            return file.size <= opts.maxSize && (opts.filters ? opts.filters.indexOf(file.type) > -1 : true);
-        }
-
-        function async(file) {
-            var fname = _.formatDate(new Date(), 'yyyyMMddhhmmssS') + '.' + ext(file.type),
-                fp = opts.dir + fname;
-            fs.rename(file.path, fp, function(err) {
-                c++;
-                err || ps.push(fp.slice(9));
-                c == len && result(err, ps, callback);
-                fs.unlink(file.path, function(err) {});
-            });
-        }
-
-        function ext(type) {
-            return {
-                'image/jpeg': 'jpg',
-                'image/png': 'png',
-                'image/gif': 'gif',
-                'image/bmp': 'bmp',
-                'image/x-png': 'png',
-                'image/x-icon': 'icon'
-            }[type] || 'png';
-        }
-
-        function result(err, path, cb) {
-            var r = {};
-            r.message = err ? '上传文件失败' : '上传文件成功';
-            r.path = err ? null : path;
-            cb && cb(r);
-        }
     },
 
     rmdir: function(path, cb) {
