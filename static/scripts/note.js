@@ -15,7 +15,7 @@
                     this.render();
 
                     var tp = this.get(0);
-                    tp && groupsmodel.type(tp);
+                    tp && groupsmodel.attr('type', tp);
                 }
             })
             this.model.load();
@@ -23,16 +23,13 @@
     })('#typelist', typesmodel);
 
 
-    var groupsmodel = My.extend(new My.Model('/note/notegroups'), {
-        type: function(val) {
-            if (My.isUndefined(val))
-                return this._type;
-            (!this._type || this._type.id !== val.id) && (this._type = val, this.trigger('change:type', val));
-        },
-
+    var groupsmodel = new My.Model('/note/notegroups', {
+        type: null
+    });
+    My.extend(groupsmodel, {
         loadbefore: function(loader) {
-            loader.url = M.packageURL(loader.url, {
-                type: this.type().id
+            loader.url = M.url.marry(loader.url, {
+                type: this.attr('type').id
             });
         },
 
@@ -41,36 +38,33 @@
         }
     });
 
-    var groupsview = new(My.View.extend({
+    var groupsview = My.View.extend({
         tpl: '<a data-id="{id}">{name}</a>',
         events: {},
 
         initialize: function() {
             this.model.on({
-                'change:type': function(e) {
-                    this.find(e.data) ? this.render() : this.load();
+                'attr:type': function(e) {
+                    this.load();
                 },
                 load: function() {
                     this.render();
 
                     var gp = this.get(0);
-                    gp && notesmodel.group(gp);
+                    gp && notesmodel.attr('group', gp);
                 }
             });
         }
-    }))('#grouplist', groupsmodel);
+    })('#grouplist', groupsmodel);
 
 
-    var notesmodel = My.extend(new My.Model('/note/notes'), {
-        group: function(val) {
-            if (My.isUndefined(val))
-                return this._group;
-            (!this._group || this._group.id !== val.id) && (this._group = val, this.trigger('change:group', val));
-        },
-
+    var notesmodel = new My.Model('/note/notes', {
+        group: null
+    });
+    My.extend(notesmodel, {
         loadbefore: function(loader) {
-            loader.url = M.packageURL(loader.url, {
-                group: this.group().id
+            loader.url = M.url.marry(loader.url, {
+                group: this.attr('group').id
             });
         },
 
@@ -79,19 +73,19 @@
         }
     });
 
-    var notesview = new(My.View.extend({
+    var notesview = My.View.extend({
         tpl: '<section><header><a data-id="{id}">{name}</a></header><article>{content}</article><footer><a>{signature}</a><a>{ctime}</a></footer></section>',
         events: {},
 
         initialize: function() {
             this.model.on({
-                'change:group': function(e) {
-                    this.find(e.data) ? this.render() : this.load();
+                'attr:group': function(e) {
+                    this.load();
                 },
                 load: function() {
                     this.render();
                 }
             });
         }
-    }))('#notelist', notesmodel);
+    })('#notelist', notesmodel);
 })();
