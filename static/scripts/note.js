@@ -28,10 +28,9 @@
         },
 
         renderafter: function() {
-            this.delegate();
             this.blur = M('.blur');
             this.items = this.ui.find('li');
-            this.setCur(0);
+            this.delegate().setCur(0);
         },
 
         setCur: function(i) {
@@ -87,6 +86,42 @@
                     bp && notesmodel.attr('book', bp);
                 }
             });
+        },
+
+        renderafter: function() {
+            this.items = this.ui.find('li');
+            this.delegate().layout().setCur(0);
+        },
+
+        layout: function() {
+            var l = this.items.length;
+            this.items.each(function(i) {
+                //z - index: 4; - webkit - transform: rotate(360deg) translate(0, 0);
+                M(this).style({
+                    'z-index': l - i,
+                    '-webkit-transform': 'rotate(' + (360 + i * 10) + 'deg) translate(' + i * 80 + 'px, 0)'
+                });
+            });
+            return this;
+        },
+
+        setCur: function(i) {
+            if (i < 0 || i >= this.items.length) return;
+
+            var cur = this.items.get(i);
+            if (cur) {
+                var old = this.items.get(this.cur);
+                old && (M(old).removeClass('cur'));
+
+                M(cur).addClass('cur');
+                this.cur = i;
+
+                this.emitNotes(this.model.get(i));
+            }
+        },
+
+        emitNotes: function(book) {
+            book && notesmodel.attr('book', book);
         }
     })('#booklist', booksmodel);
 
