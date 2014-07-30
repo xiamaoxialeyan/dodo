@@ -27,7 +27,7 @@ function no_exist(id, cb, n) {
     });
 }
 
-function query_failed(cb, b) {
+function query_failed(cb, b, n) {
     cb && cb({
         status: status.FAILED,
         message: '查询' + ns[n] + '失败',
