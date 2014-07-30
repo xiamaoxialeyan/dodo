@@ -33,7 +33,7 @@ CREATE TABLE `photo` (
   `supports` int(11) DEFAULT '0',
   `ctime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `photo` (
 
 LOCK TABLES `photo` WRITE;
 /*!40000 ALTER TABLE `photo` DISABLE KEYS */;
+INSERT INTO `photo` VALUES (1,1,'test_photo','testtesttest....','/photo/gallary_1/20140725163829.jpg',0,'2014-07-25 16:38:29'),(2,1,'test_photo2','','/photo/gallary_1/2014072517005854.jpg',0,'2014-07-25 17:00:58'),(3,1,'test_photo5','','/photo/gallary_1/20140725172015926.jpg',0,'2014-07-25 17:20:15'),(4,1,'1111','','/photo/gallary_1/20140725213036901.jpg',0,'2014-07-25 21:31:30');
 /*!40000 ALTER TABLE `photo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-24 17:47:24
+-- Dump completed on 2014-07-30 21:11:37

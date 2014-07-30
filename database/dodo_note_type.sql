@@ -30,7 +30,7 @@ CREATE TABLE `note_type` (
   `ctime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `note_type` (
 
 LOCK TABLES `note_type` WRITE;
 /*!40000 ALTER TABLE `note_type` DISABLE KEYS */;
-INSERT INTO `note_type` VALUES (1,'默认类别','2014-07-24 17:33:46');
+INSERT INTO `note_type` VALUES (1,'默认类别','2014-07-30 16:22:03'),(2,'曾经旧事','2014-07-30 16:22:54'),(3,'生活助记','2014-07-30 16:23:00'),(4,'旅行路上','2014-07-30 16:23:05'),(5,'心情记','2014-07-30 16:23:09');
 /*!40000 ALTER TABLE `note_type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -55,7 +55,7 @@ DELIMITER ;;
 after delete on note_type
 for each row
 begin
-update note_group set `type`=1 where `type`=old.id;
+update note_book set `type`=1 where `type`=old.id;
 end */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -72,4 +72,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-24 17:47:23
+-- Dump completed on 2014-07-30 21:11:36

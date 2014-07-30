@@ -26,9 +26,9 @@ DROP TABLE IF EXISTS `note`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `note` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `group` int(10) unsigned NOT NULL,
+  `book` int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
-  `content` varchar(500) DEFAULT NULL,
+  `content` varchar(1000) DEFAULT NULL,
   `signature` varchar(10) DEFAULT NULL,
   `ctime` datetime DEFAULT NULL,
   `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -58,7 +58,7 @@ DELIMITER ;;
 after delete on note
 for each row
 begin
-insert into note_recycle set id=old.id,`group`=old.group,name=old.name,content=old.content,signature=old.signature,ctime=old.ctime,mtime=old.mtime,dtime=now();
+insert into note_recycle set id=old.id,`book`=old.book,name=old.name,content=old.content,signature=old.signature,ctime=old.ctime,mtime=old.mtime,dtime=now();
 end */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -75,4 +75,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-24 17:47:26
+-- Dump completed on 2014-07-30 21:11:39

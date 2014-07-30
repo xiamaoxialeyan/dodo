@@ -33,7 +33,7 @@ CREATE TABLE `gallary` (
   `ctime` datetime DEFAULT NULL,
   `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `gallary` (
 
 LOCK TABLES `gallary` WRITE;
 /*!40000 ALTER TABLE `gallary` DISABLE KEYS */;
+INSERT INTO `gallary` VALUES (1,'测试画廊','testtesttest','/photo/cover.jpg',0,'2014-07-25 13:51:43','2014-07-25 05:52:26');
 /*!40000 ALTER TABLE `gallary` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-24 17:47:26
+-- Dump completed on 2014-07-30 21:11:40
