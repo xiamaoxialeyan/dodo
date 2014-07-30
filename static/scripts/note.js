@@ -1,4 +1,9 @@
 (function() {
+    M('.typebox').mousewheel(function(evt) {
+        var n = evt.wheelDelta > 0 ? -1 : 1;
+        typesview.setCur(typesview.cur + n);
+    });
+
     var typesmodel = My.extend(new My.Model('/note/notetypes'), {
         loadafter: function(result) {
             return result.data || [];
@@ -6,27 +11,55 @@
     });
 
     var typesview = My.View.extend({
-        tpl: '<a data-id="{id}">{name}</a>',
-        events: {},
+        tpl: '<li><a data-id="{id}"><label>{name}</label></li></a>',
+        events: {
+            'click a': function(evt, view) {
+                view.setCur(M(this).parent().index());
+            }
+        },
 
         initialize: function() {
             this.model.on({
                 load: function() {
                     this.render();
-
-                    var tp = this.get(0);
-                    tp && groupsmodel.attr('type', tp);
                 }
             })
             this.model.load();
+        },
+
+        renderafter: function() {
+            this.delegate();
+            this.blur = M('.blur');
+            this.items = this.ui.find('li');
+            this.setCur(0);
+        },
+
+        setCur: function(i) {
+            if (i < 0 || i >= this.items.length) return;
+
+            var cur = this.items.get(i);
+            if (cur) {
+                var old = this.items.get(this.cur);
+                old && (M(old).removeClass('cur'));
+
+                this.blur.style('top', 35 + 40 * i);
+                M(cur).addClass('cur');
+                this.cur = i;
+
+                this.emitBooks(this.model.get(i));
+            }
+        },
+
+        emitBooks: function(type) {
+            type && booksmodel.attr('type', type);
         }
     })('#typelist', typesmodel);
 
 
-    var groupsmodel = new My.Model('/note/notegroups', {
+    var booksmodel = new My.Model('/note/notebooks', {
         type: null
     });
-    My.extend(groupsmodel, {
+    My.extend(booksmodel, {
         loadbefore: function(loader) {
             loader.url = M.url.marry(loader.url, {
                 type: this.attr('type').id
@@ -38,8 +71,8 @@
         }
     });
 
-    var groupsview = My.View.extend({
-        tpl: '<a data-id="{id}">{name}</a>',
+    var booksview = My.View.extend({
+        tpl: '<li><a data-id="{id}">{name}</li></a>',
         events: {},
 
         initialize: function() {
@@ -50,21 +83,21 @@
                 load: function() {
                     this.render();
 
-                    var gp = this.get(0);
-                    gp && notesmodel.attr('group', gp);
+                    var bp = this.get(0);
+                    bp && notesmodel.attr('book', bp);
                 }
             });
         }
-    })('#grouplist', groupsmodel);
+    })('#booklist', booksmodel);
 
 
     var notesmodel = new My.Model('/note/notes', {
-        group: null
+        book: null
     });
     My.extend(notesmodel, {
         loadbefore: function(loader) {
             loader.url = M.url.marry(loader.url, {
-                group: this.attr('group').id
+                book: this.attr('book').id
             });
         },
 
@@ -79,7 +112,7 @@
 
         initialize: function() {
             this.model.on({
-                'attr:group': function(e) {
+                'attr:book': function(e) {
                     this.load();
                 },
                 load: function() {

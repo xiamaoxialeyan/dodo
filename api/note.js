@@ -3,7 +3,7 @@
 var db = require('../db'),
     status = require('../status.json');
 
-var ns = ['类别', '分组', '记事', '回收站记事'];
+var ns = ['类别', '记事本', '记事', '回收站记事'];
 
 function param_error(cb) {
     cb && cb({
@@ -119,37 +119,37 @@ var api = {
         });
     },
 
-    getNoteGroups: function(type, cb) {
+    getNoteBooks: function(type, cb) {
         function get() {
-            db.query("select * from note_group where `type`=?", type, function(err, data) {
+            db.query("select * from note_book where `type`=?", type, function(err, data) {
                 query_result(err, null, data, cb, 1);
             });
         };
         !!type ? this.findNoteType(type, get, cb) : param_error(cb);
     },
 
-    getNoteGroup: function(id, cb) {
+    getNoteBook: function(id, cb) {
         function get() {
-            db.query("select * from note_group where `id`=?", id, function(err, data) {
+            db.query("select * from note_book where `id`=?", id, function(err, data) {
                 query_result(err, id, data, cb, 1);
             });
         };
         !!id ? get() : param_error(cb);
     },
 
-    findNoteGroup: function(id, fn, cb) {
-        this.getNoteGroup(id, function(result) {
+    findNoteBook: function(id, fn, cb) {
+        this.getNoteBook(id, function(result) {
             isExist(result) ? fn.call(api) : no_exist(id, cb, 1);
         });
     },
 
-    getNotes: function(group, cb) {
+    getNotes: function(book, cb) {
         function get() {
-            db.query("select * from note where `group`=?", group, function(err, data) {
+            db.query("select * from note where `book`=?", book, function(err, data) {
                 query_result(err, null, data, cb, 2);
             });
         };
-        !!group ? this.findNoteGroup(group, get, cb) : param_error(cb);
+        !!book ? this.findNoteBook(book, get, cb) : param_error(cb);
     },
 
     getNote: function(id, cb) {
@@ -176,22 +176,22 @@ var api = {
         name ? insert() : param_error(cb);
     },
 
-    addNoteGroup: function(type, name, cb) {
+    addNoteBook: function(type, name, desc, cb) {
         function insert() {
-            db.query("insert into note_group set `type`=?,`name`=?,`ctime`=now()", [type, name], function(err, result) {
+            db.query("insert into note_book set `type`=?,`name`=?,`desc`=?,`ctime`=now()", [type, name, desc], function(err, result) {
                 insert_result(err, result, cb, 1);
             });
         };
         !!type && name ? this.findNoteType(type, insert, cb) : param_error(cb);
     },
 
-    addNote: function(group, name, content, signature, cb) {
+    addNote: function(book, name, content, signature, cb) {
         function insert() {
-            db.query("insert into note set `group`=?,`name`=?,`content`=?,`signature`=?,ctime=now()", [group, name, content, signature], function(err, result) {
+            db.query("insert into note set `book`=?,`name`=?,`content`=?,`signature`=?,ctime=now()", [book, name, content, signature], function(err, result) {
                 insert_result(err, result, cb, 2);
             });
         };
-        !!group && name ? this.findNoteGroup(group, insert, cb) : param_error(cb);
+        !!book && name ? this.findNoteBook(book, insert, cb) : param_error(cb);
     },
 
     modifyNoteType: function(id, name, cb) {
@@ -203,8 +203,8 @@ var api = {
         !!id && name ? this.findNoteType(id, update, cb) : param_error(cb);
     },
 
-    modifyNoteGroup: function(id, type, name, cb) {
-        !!id && (!!type || name !== undefined) ? this.findNoteGroup(id, function() {
+    modifyNoteBook: function(id, type, name, desc, cb) {
+        !!id && (!!type || name !== undefined) ? this.findNoteBook(id, function() {
             !!type ? this.findNoteType(type, update, cb) : update();
         }, cb) : param_error(cb);
 
@@ -212,21 +212,22 @@ var api = {
             var settings = {};
             !!type && (settings['type'] = type);
             name !== undefined && (settings['name'] = name);
+            desc !== undefined && (settings['desc'] = desc);
 
-            db.query("update note_group set " + db.escape(settings) + " where ??=?", ['id', id], function(err, result) {
+            db.query("update note_book set " + db.escape(settings) + " where ??=?", ['id', id], function(err, result) {
                 update_result(err, id, result, cb, 1);
             });
         }
     },
 
-    modifyNote: function(id, group, name, content, signature, cb) {
-        !!id && (!!group || name !== undefined || content !== undefined || signature !== undefined) ? this.findNote(id, function() {
-            !!group ? api.findNoteGroup(group, update, cb) : update();
+    modifyNote: function(id, book, name, content, signature, cb) {
+        !!id && (!!book || name !== undefined || content !== undefined || signature !== undefined) ? this.findNote(id, function() {
+            !!book ? api.findNoteBook(book, update, cb) : update();
         }, cb) : param_error(cb);
 
         function update() {
             var settings = {};
-            !!group && (settings['group'] = group);
+            !!book && (settings['book'] = book);
             name !== undefined && (settings['name'] = name);
             content !== undefined && (settings['content'] = content);
             signature !== undefined && (settings['signature'] = signature);
@@ -252,28 +253,28 @@ var api = {
         }
     },
 
-    deleteNoteGroup: function(id, cb) {
-        if (id === 1) {
+    deleteNoteBook: function(id, cb) {
+        /* if (id === 1) {
             def_result(id, cb, 1);
             return;
-        }
+        }*/
 
-        !!id ? this.findNoteGroup(id, del, cb) : param_error(cb);
+        !!id ? this.findNoteBook(id, del, cb) : param_error(cb);
 
         function del() {
-            db.query("delete from note_group where ??=?", ['id', id], function(err, result) {
+            db.query("delete from note_book where ??=?", ['id', id], function(err, result) {
                 delete_result(err, id, result, cb, 1);
             });
         }
     },
 
-    clearNoteGroup: function(id, cb) {
+    clearNoteBook: function(id, cb) {
         function clear() {
-            db.query("delete from note where ??=?", ['group', id], function(err, result) {
+            db.query("delete from note where ??=?", ['book', id], function(err, result) {
                 delete_result(err, id, result, cb, 2);
             });
         };
-        !!id ? this.findNoteGroup(id, clear, cb) : param_error(cb);
+        !!id ? this.findNoteBook(id, clear, cb) : param_error(cb);
     },
 
     deleteNote: function(id, cb) {

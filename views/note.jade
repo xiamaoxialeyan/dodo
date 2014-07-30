@@ -4,18 +4,20 @@ block header
 	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/note.css')
 
 block content
-	section
-		header
-			h3 记个事儿吧，就不会忘了！
-		article
+	header
+		h3 记个事儿吧，就不会忘了！
+	article
+		nav
+			a.icon-plus#addtype 新建类别
+			.typebox
+				.vbar
+				span.blur
+				ul#typelist
+		section
 			nav#cmdlist
-				a#addtype 新建类别
-				a#addgroup 新建记事本
-				a#addnote 新建记事
-			nav#typelist
-			#notebox
-				#grouplist
-				#notelist
+				a.icon-plus#addbook 新建记事本
+				a.icon-plus#addnote 新建记事
+			ul#booklist
 
 block footer
 	script(type = "text/javascript", src = "http://lib.dodo.com.cn:8080/My.js")
