@@ -204,7 +204,7 @@ var api = {
     },
 
     modifyNoteBook: function(id, type, name, desc, cb) {
-        !!id && (!!type || name !== undefined) ? this.findNoteBook(id, function() {
+        !!id && (!!type || name !== undefined || desc !== undefined) ? this.findNoteBook(id, function() {
             !!type ? this.findNoteType(type, update, cb) : update();
         }, cb) : param_error(cb);
 

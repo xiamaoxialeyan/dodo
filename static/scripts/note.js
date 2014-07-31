@@ -41,7 +41,7 @@
                 var old = this.items.get(this.cur);
                 old && (M(old).removeClass('cur'));
 
-                this.blur.style('top', 35 + 40 * i);
+                this.blur.style('top', 15 + 40 * i);
                 M(cur).addClass('cur');
                 this.cur = i;
 
@@ -66,13 +66,20 @@
         },
 
         loadafter: function(result) {
-            return result.data || [];
+            return M.map(result.data || [], function(d) {
+                d.desc || (d.desc = '');
+                return d;
+            });
         }
     });
 
     var booksview = My.View.extend({
-        tpl: '<li><a data-id="{id}">{name}</li></a>',
-        events: {},
+        tpl: '<li><div title="点击查看详细记事"><a data-id="{id}">{name}</a><p class="desc">{desc}</p><p class="count"><span>{count}</span>篇</p><p class="time">{ctime}</p></div></li>',
+        events: {
+            'click li': function(evt, view) {
+                notesview.show();
+            }
+        },
 
         initialize: function() {
             this.model.on({
@@ -94,13 +101,10 @@
         },
 
         layout: function() {
-            var l = this.items.length;
+            var l = this.items.length,
+                cs = ['', 'rotated', 'twisted', 'rotated-left'];
             this.items.each(function(i) {
-                //z - index: 4; - webkit - transform: rotate(360deg) translate(0, 0);
-                M(this).style({
-                    'z-index': l - i,
-                    '-webkit-transform': 'rotate(' + (360 + i * 10) + 'deg) translate(' + i * 80 + 'px, 0)'
-                });
+                M(this).addClass(cs[i % 4]);
             });
             return this;
         },
@@ -143,9 +147,17 @@
 
     var notesview = My.View.extend({
         tpl: '<section><header><a data-id="{id}">{name}</a></header><article>{content}</article><footer><a>{signature}</a><a>{ctime}</a></footer></section>',
-        events: {},
+        events: {
+            'click': function(evt, view) {
+
+            }
+        },
 
         initialize: function() {
+            this.parent = this.ui.parent().click(function() {
+                M(this).hide();
+            });
+
             this.model.on({
                 'attr:book': function(e) {
                     this.load();
@@ -154,6 +166,14 @@
                     this.render();
                 }
             });
+        },
+
+        show: function() {
+            this.parent.show();
+        },
+
+        hide: function() {
+            this.parent.hide();
         }
     })('#notelist', notesmodel);
 })();

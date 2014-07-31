@@ -29,6 +29,7 @@ CREATE TABLE `note_book` (
   `type` int(10) unsigned NOT NULL,
   `name` varchar(50) NOT NULL,
   `desc` varchar(100) DEFAULT NULL,
+  `count` int(10) unsigned DEFAULT '0',
   `ctime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
@@ -41,7 +42,7 @@ CREATE TABLE `note_book` (
 
 LOCK TABLES `note_book` WRITE;
 /*!40000 ALTER TABLE `note_book` DISABLE KEYS */;
-INSERT INTO `note_book` VALUES (1,4,'北京游记',NULL,'2014-07-30 17:29:12'),(2,4,'背包客',NULL,'2014-07-30 17:29:39'),(3,4,'辽东兴城',NULL,'2014-07-30 17:29:49'),(4,4,'湘西千里行',NULL,'2014-07-30 17:30:04');
+INSERT INTO `note_book` VALUES (1,4,'北京游记','这里是北京，我在北京，看人山人海。',0,'2014-07-30 17:29:12'),(2,4,'背包客',NULL,0,'2014-07-30 17:29:39'),(3,4,'辽东兴城',NULL,0,'2014-07-30 17:29:49'),(4,4,'湘西千里行',NULL,0,'2014-07-30 17:30:04');
 /*!40000 ALTER TABLE `note_book` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -75,4 +76,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-07-30 21:11:38
+-- Dump completed on 2014-07-31 20:16:23

@@ -8,16 +8,36 @@ block content
 		h3 记个事儿吧，就不会忘了！
 	article
 		nav
-			a.icon-plus#addtype 新建类别
+			button#addtype(title="新建类别") 类别
+			button#addbook(title="新建记事本") 记事本
+			button#addnote(title="新建记事") 记事
+
+		section.clearfix
+			//- a.arrow_up
 			.typebox
 				.vbar
 				span.blur
 				ul#typelist
-		section
-			nav#cmdlist
-				a.icon-plus#addbook 新建记事本
-				a.icon-plus#addnote 新建记事
-			ul#booklist
+			//- a.arrow_down			
+			//- a.arrow_left
+			.bookbox
+				ul.clearfix#booklist
+			//- a.arrow_right
+
+		.notebox(style="display: none;")
+			#notelist
+
+		.editor.note(style="display:none;")
+			.editorbox
+				.header
+					h4 新建记事
+				form(action="/note/note",action="post")
+					.bookslc
+						label 记事本
+							select(name="name")
+					.editorbox(contentediable)
+					.btns
+
 
 block footer
 	script(type = "text/javascript", src = "http://lib.dodo.com.cn:8080/My.js")
