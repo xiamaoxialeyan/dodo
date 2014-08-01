@@ -94,15 +94,15 @@ article>nav>button:hover::after{
 	background: -webkit-radial-gradient(#dbeef8 ,#f2f4f6 50%);
 }
 
-article>nav>button#addtype::after{
+article>nav>button[data-type="type"]::after{
 	content: '+类别';
 }
 
-article>nav>button#addbook::after{	
+article>nav>button[data-type="book"]::after{	
 	content: '+记事本';
 }
 
-article>nav>button#addnote::after{
+article>nav>button[data-type="note"]::after{
 	content: '+记事';
 }
 
@@ -363,9 +363,10 @@ article>section{
 }
 
 .bookbox ul>li p.desc{
+	width: 100%;
 	height: 55px;
-	top: 100px;
-	padding: 5px;
+	top: 80px;
+	padding: 5px 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	color: #fff;
@@ -373,6 +374,7 @@ article>section{
 	letter-spacing: 2px;
 	line-height: 20px;
 	text-indent: 32px;
+	background: rgba(0,0,0,.35);
 }
 
 .bookbox ul>li p.count{
@@ -408,6 +410,107 @@ article>section{
 	z-index: 1000;
 }
 
+.formbox{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(255,255,255,.45);
+	z-index: 9999;
+}
+
+.formwin{
+	position: relative;
+	top: 100px;
+	width: 450px;
+	margin: 0 auto;
+	border: 1px solid #6d7a89;
+	border-radius: 3px;
+	background: #fff;
+	box-shadow: 0 0 9px #999;
+}
+
+.formtitle{
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #ccc;
+	background: -webkit-linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	background: -moz-linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	background: -o-linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	background: linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+}
+
+.formtitle h5{
+	text-indent: 1em;
+	color: #333;
+	font-size: 16px;
+	letter-spacing: 5px;
+}
+
+.formwin form{
+	padding: 1em 3em;
+}
+
+.formwin form label{
+	color: #666;
+	font-size: 16px;
+}
+
+.formwin form label input{
+	width: 80%;
+	height: 28px;
+	line-height: 28px;
+	padding-left: 4px;
+	border: #cecece 1px solid;
+	color: #666;
+}
+
+.btns{
+	margin-top: 20px;
+	text-align: center;
+}
+
+.btns input,.btns button{
+	margin: 0 10px;
+	min-width: 100px;
+	height: 36px;
+	border: 1px solid #ccc;
+	background: -webkit-linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	background: -moz-linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	background: -o-linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	background: linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	border-radius: 2px;
+	color: #333;
+	font-size: 16px;
+	outline: 0;
+	cursor: pointer;
+}
+
+.btns input:hover,.btns button:hover{
+	background: -webkit-linear-gradient(top,#fff 20%,#FAF7F7 80%,#eee);
+	background: -moz-linear-gradient(top,#fff 20%,#FAF7F7 80%,#eee);
+	background: -o-linear-gradient(top,#fff 20%,#FAF7F7 80%,#eee);
+	background: linear-gradient(top,#fff 20%,#FAF7F7 80%,#eee);
+}
+
+.btns input[type="submit"]{
+	border: 1px solid #999;
+	background: -webkit-linear-gradient(top,#D0BAF6,#7F77DD);
+	background: -moz-linear-gradient(top,#D0BAF6,#7F77DD);
+	background: -o-linear-gradient(top,#D0BAF6,#7F77DD);
+	background: linear-gradient(top,#D0BAF6,#7F77DD);
+	color: #fff;
+	font-weight: bold;
+}
+
+.btns input[type="submit"]:hover{
+	background: -webkit-linear-gradient(top,#D7C5F7,#918BD8);
+	background: -moz-linear-gradient(top,#D7C5F7,#918BD8);
+	background: -o-linear-gradient(top,#D7C5F7,#918BD8);
+	background: linear-gradient(top,#D7C5F7,#918BD8);
+}
+ 
 .arrow_up,.arrow_down,.arrow_left,.arrow_right{
 	position: relative;
 	display: block;

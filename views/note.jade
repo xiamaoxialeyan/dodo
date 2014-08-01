@@ -8,9 +8,9 @@ block content
 		h3 记个事儿吧，就不会忘了！
 	article
 		nav
-			button#addtype(title="新建类别") 类别
-			button#addbook(title="新建记事本") 记事本
-			button#addnote(title="新建记事") 记事
+			button(title = "新建类别", data-type = "type") 类别
+			button(title = "新建记事本", data-type = "book") 记事本
+			button(title = "新建记事", data-type = "note") 记事
 
 		section.clearfix
 			//- a.arrow_up
@@ -24,20 +24,14 @@ block content
 				ul.clearfix#booklist
 			//- a.arrow_right
 
-		.notebox(style="display: none;")
-			#notelist
+		.notebox(style = "display: none;")
+			ul#notelist
 
-		.editor.note(style="display:none;")
-			.editorbox
-				.header
-					h4 新建记事
-				form(action="/note/note",action="post")
-					.bookslc
-						label 记事本
-							select(name="name")
-					.editorbox(contentediable)
-					.btns
+		.formbox.typeform(style = "display: none;")
+		.formbox.bookform(style = "display: none;")
+		.formbox.noteform(style = "display: none;")
 
+		include alert_tip.jade
 
 block footer
 	script(type = "text/javascript", src = "http://lib.dodo.com.cn:8080/My.js")
