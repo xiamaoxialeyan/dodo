@@ -271,7 +271,7 @@
     function createUrlForm(container, model) {
         var form = new M.component.Form(container, model, {
             title: '添加超链接',
-            body: ['<div class="form editor-form">',
+            body: ['<div class="form">',
                 '<label>链接标题：<input name="title" placeholder="请输入链接标题"></label>',
                 '<label>链接地址：<input name="url" placeholder="请输入链接地址(如:http://www.dodo.com.cn)" value="http://"></label>',
                 '</div>'
@@ -313,7 +313,7 @@
     function createImageForm(container) {
         return new ImageForm(container, {
             title: '添加图片',
-            body: ['<div class="form image-form">',
+            body: ['<div class="form">',
                 '<div class="accordionbox"></div>',
                 '</div>'
             ].join('')

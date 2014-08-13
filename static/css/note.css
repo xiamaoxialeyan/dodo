@@ -452,18 +452,22 @@ body>article>section{
 
 .noteform>.component-form-win{
 	width: 90%;
+	height: 90%;
 }
 
 .noteform>.component-form-win.visibility{
-	top: 10px;
+	top: 5%;
+}
+
+.noteeditor-item{
+	flex: 1;
 }
 
 .noteeditor{
 	-webkit-flex: 1;
 	-moz-flex: 1;
 	flex: 1;
-	height: 400px;
-	padding-left: 4px;
+	padding-left: 5px;
 	border: #cecece 1px solid;
 }
 

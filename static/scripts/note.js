@@ -315,8 +315,13 @@
             var _ = this;
             M.component.Editor.create(this.$form.find('.noteeditor'), function(editor) {
                 _.editor = editor;
+                _.resize();
             });
             return this;
+        },
+
+        resize: function() {
+            this.editor && this.editor.ui.height(this.$body.height() - this.$body.find('label').outerHeight() * 3 - 20);
         },
 
         updateSelect: function() {
@@ -448,5 +453,9 @@
 
     M('article>nav>button').click(function(evt) {
         openForm(M(this).data('type'));
+    });
+
+    M(window).resize(function() {
+        noteform && noteform.resize();
     });
 })();

@@ -9,7 +9,7 @@
 .component-editor-header{
 	position: absolute;
 	width: 100%;
-	padding: 5px;
+	padding: 5px 0;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
@@ -540,7 +540,6 @@
 
 .component-editor-content{
 	height: 100%;
-	padding: 5px;
 	padding-top: 40px;
 	outline: none;
 	cursor: text;
@@ -563,15 +562,6 @@
 
 .component-editor .component-form-win.visibility{
 	top: 50px;
-}
-
-
-.component-editor .editor-form{
-	padding: 1em 2em;
-}
-
-.component-editor .image-form{
-	padding: 1em 2em;
 }
 
 .component-accordion-content.broswer p{

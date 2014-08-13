@@ -17,6 +17,8 @@
 }
 
 .component-form-win{
+	display: flex;
+	flex-flow: column;
 	position: relative;
 	top: -500px;
 	width: 450px;
@@ -53,10 +55,12 @@
 	letter-spacing: 5px;
 }
 
-.component-form-body{}
+.component-form-body{
+	flex: 1;
+}
 
 .component-form .form{
-	padding: 1em 3em;
+	padding: 1em 2em;
 }
 
 .component-form .form label{
@@ -102,7 +106,7 @@
 }
 
 .component-form-btns{
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	text-align: center;
 }
  
