@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>手风琴组件</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/accordion.css">
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		section{
+			width: 1100px;
+			margin: 0 auto;
+		}
+		header{
+			text-align: center;
+			padding: 25px 0;
+		}
+		header h1{
+			margin: 10px 0;
+			font-size: 32px;
+		}
+	</style>
+</head>
+<body>
+	<section>
+		<header><h1>手风琴组件</h1></header>
+		<div id="demobox"></div>
+	</section>
+	<script type="text/javascript" src="http://lib.dodo.com.cn:8888/My.js"></script>
+	<script type="text/javascript" src="/static/scripts/accordion.js"></script>
+	<script type="text/javascript">
+		var accordion = new M.component.Accordion('#demobox', [{
+		    title: '标题1',
+		    content: '<p>我是内容1</p>'
+		}, {
+		    title: '标题2',
+		    content: '<p>我是内容2</p>',
+		}, {
+		    title: '标题3',
+		    content: '<p>我是内容3</p>',
+		}]);
+	</script>
+</body>
+</html>

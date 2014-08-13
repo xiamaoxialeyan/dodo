@@ -82,11 +82,11 @@ function delete_result(err, id, result, cb, n) {
 }
 
 var api = {
-    upload: function(gallary, file, cb) {
-        uploader.upload(file, {
+    upload: function(gallary, files, cb) {
+        uploader.upload(files, {
             dir: './uploads/photo/gallary_' + gallary,
-            maxSize: 5 * 1024 * 1025,
-            filters: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/x-icon', 'image/x-png']
+            maxSize: 5,
+            filters: ['image/*']
         }, cb);
     },
 

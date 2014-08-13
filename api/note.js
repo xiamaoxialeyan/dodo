@@ -1,7 +1,8 @@
 /******api for note service*******/
 
 var db = require('../db'),
-    status = require('../status.json');
+    status = require('../status.json'),
+    uploader = require('../upload');
 
 var ns = ['类别', '记事本', '记事', '回收站记事'];
 
@@ -371,6 +372,14 @@ var api = {
         db.query("delete from note_recycle", function(err, result) {
             delete_result(err, null, result, cb, 3);
         });
+    },
+
+    upload: function(files, cb) {
+        uploader.upload(files, {
+            dir: './uploads/note/',
+            maxSize: 10,
+            filters: ['image/*']
+        }, cb);
     }
 }
 

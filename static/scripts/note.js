@@ -9,11 +9,11 @@
         }
     });
 
-    var typesview = My.View.extend({
+    var typesview = new(My.View.extend({
         tpl: '<li><a data-id="{id}"><label>{name}</label></a></li>',
         events: {
-            'click a': function(evt, view) {
-                view.setCur(M(this).parent().index());
+            'click li': function(evt, view) {
+                view.setCur(M(this).index());
             }
         },
 
@@ -65,16 +65,20 @@
 
         addType: function(type) {
             this.ui.append(M.template(this.tpl, type));
+            this.items = this.ui.find('li');
+            this.setCur(this.items.length - 1);
         },
 
         modifyType: function(index, type, old) {
-            M(this.items.get(index)).find('label').txt(type.name);
+            M(this.items.get(index)).find('label').text(type.name);
         },
 
         delType: function(index) {
             M(this.items.get(index)).remove();
+            this.items = this.ui.find('li');
+            this.setCur(index >= this.items.length ? 0 : index);
         }
-    })('#typelist', typesmodel);
+    }, 'TypesView'))('#typelist', typesmodel);
 
 
     var booksmodel = new My.Model('/note/notebooks', {
@@ -90,36 +94,45 @@
         loadafter: function(result) {
             return M.map(result.data || [], function(d) {
                 d.desc || (d.desc = '');
+                d.ctime = d.ctime.slice(0, 16);
                 return d;
             });
         }
     });
 
-    var booksview = My.View.extend({
+    var booksview = new(My.View.extend({
         tpl: '<li><div title="点击查看详细记事"><a data-id="{id}">{name}</a><p class="desc">{desc}</p><p class="count"><span>{count}</span>篇</p><p class="time">{ctime}</p></div></li>',
         events: {
             'click li': function(evt, view) {
-                notesview.show();
+                view.emitNotes(view.model.get(M(this).index()));
             }
         },
 
         initialize: function() {
+            var _ = this;
             this.model.on({
                 'attr:type': function(e) {
                     this.load();
                 },
                 load: function() {
                     this.render();
-
-                    var bp = this.get(0);
-                    bp && notesmodel.attr('book', bp);
+                },
+                add: function(evt) {
+                    _.addBook(evt.data);
+                },
+                change: function(evt) {
+                    var params = evt.data;
+                    _.modifyBook(params[0], params[1], params[2]);
+                },
+                unset: function(evt) {
+                    _.delBook(evt.data);
                 }
             });
         },
 
         renderafter: function() {
             this.items = this.ui.find('li');
-            this.delegate().layout().setCur(0);
+            this.delegate().layout();
         },
 
         layout: function() {
@@ -131,25 +144,26 @@
             return this;
         },
 
-        setCur: function(i) {
-            if (i < 0 || i >= this.items.length) return;
-
-            var cur = this.items.get(i);
-            if (cur) {
-                var old = this.items.get(this.cur);
-                old && (M(old).removeClass('cur'));
-
-                M(cur).addClass('cur');
-                this.cur = i;
-
-                this.emitNotes(this.model.get(i));
-            }
-        },
-
         emitNotes: function(book) {
             book && notesmodel.attr('book', book);
+        },
+
+        addBook: function(book) {
+            this.ui.append(M.template(this.tpl, book));
+            this.items = this.ui.find('li');
+            this.layout();
+        },
+
+        modifyBook: function(index, book, old) {
+            M(this.items.get(index)).find('a').text(book.name).next().text(book.desc).next().find('span').text(book.count);
+        },
+
+        delBook: function(index) {
+            M(this.items.get(index)).remove();
+            this.items = this.ui.find('li');
+            this.layout();
         }
-    })('#booklist', booksmodel);
+    }, 'BooksView'))('#booklist', booksmodel);
 
 
     var notesmodel = new My.Model('/note/notes', {
@@ -167,22 +181,24 @@
         }
     });
 
-    var notesview = My.View.extend({
+    var notesview = new(My.View.extend({
         tpl: '<li><a data-id="{id}">{name}</a><a>{signature}</a><a>{ctime}</a></li>',
         events: {
-            'click': function(evt, view) {
+            'click li': function(evt, view) {
 
             }
         },
 
         initialize: function() {
+            var _ = this;
+
             this.parent = this.ui.parent().click(function() {
-                M(this).hide();
+                _.hide();
             });
 
             this.model.on({
                 'attr:book': function(e) {
-                    this.load();
+                    e.data && (_.show(), this.load());
                 },
                 load: function() {
                     this.render();
@@ -196,152 +212,241 @@
 
         hide: function() {
             this.parent.hide();
+            this.model.attr('book', null);
         }
-    })('#notelist', notesmodel);
+    }, 'NotesView'))('#notelist', notesmodel);
 
 
-    var FormView = My.View.extend({
-        events: {
-            'click': function(evt, view) {
-                M(evt.target).is('.formbox', view.ui) && view.close();
-            }
-        },
-
-        renderafter: function() {
-            this.form = this.ui.find('form');
-        },
-
-        open: function() {
-            this.ui && this.ui.show();
-
-            var f = this.form && this.form.find('input[name]');
-            f && f[0] && f[0].focus();
-        },
-
-        close: function() {
-            this.ui && this.ui.hide();
-        },
-
-        cancel: function() {
-            this.form && this.form.find('[name]').val('');
-            this.close();
-        },
-
-        save: function() {
-            if (this.form) {
-                var url = this.form.attr('action'),
-                    method = this.form.attr('method'),
-                    data = {};
-
-                this.form.find('[name]').each(function() {
-                    data[this.name] = this.value;
-                });
-
-                var _ = this;
-                M.ajax(url, {
-                    method: method,
-                    params: data,
-                    success: function(res) {
-                        res.status == 1 && (M.merge(res.data, data), _.close());
-                        alerttip.show(res.message);
-                        _.trigger('saved', res.data);
-                    },
-                    error: function() {
-                        alerttip.show('未知错误！');
-                        _.trigger('saved', null);
-                    }
-                });
-            }
-        }
-    });
-
-
-    var formhtmls = {
-        type: ['<form autocomplete="off" action="/note/notetype" method="post">',
-            '<label>名称：<input name="name" placeholder="请输入类别名称"></label>',
-            '<div class="btns">',
-            '<input type="submit" value="保 存">',
-            '<button>取 消</button>',
-            '</div>',
-            '</form>'
-        ].join('')
-    };
-
-    var typesform = FormView.extend({
-        tpl: '<div class="formwin"><div class="formtitle"><h5>新建类别</h5></div>' + formhtmls.type + '</div>',
-        events: {
-            'click input[type="submit"]': function(evt, view) {
-                evt.preventDefault();
-                view.check() && view.save();
-            },
-            'click button': function(evt, view) {
-                evt.preventDefault();
-                view.cancel();
-            }
-        },
-
-        initialize: function() {
-            var _ = this;
-            this.on('saved', function(evt) {
-                _.addType(evt.data);
-            });
-        },
-
-        template: function() {
-            return this.tpl;
-        },
-
-        addType: function(type) {
-            type && typesmodel.set('$', type);
+    var TypeForm = M.component.Form.extend({
+        addType: function(id) {
+            id && (this.model.set('id', id), this.model.attr('types').set('$', this.model.get(0)));
         },
 
         check: function() {
-            if (!this.form[0][0].value) {
-                alerttip.show('类别名称不能为空！');
+            if (!this.model.get('name')) {
+                M.component.alerttip.show('类别名称不能为空！');
                 return false;
             }
             return true;
+        },
+
+        commited: function(res) {
+            if (!res) {
+                M.component.alerttip.show('未知错误！');
+                return;
+            }
+            res.status == 1 && (this.addType(res.data.id), this.close());
+            M.component.alerttip.show(res.message);
         }
-    })('.typeform');
+    }, 'TypeForm');
 
 
-    var booksform = FormView.extend({
-        tpl: '',
-        events: {}
-    })('.bookform', typesmodel);
+    var BookForm = M.component.Form.extend({
+        initialized: function() {
+            var _ = this;
+            this.model.attr('books').on({
+                'attr:type': function(evt) {
+                    _.setType(evt.data.id);
+                }
+            });
+            this.setType(this.model.attr('books').get('type'));
+        },
+
+        setType: function(type) {
+            this.$body.find('input[name="type"]').val(type);
+        },
+
+        addBook: function(id) {
+            id && (this.model.set({
+                'id': id,
+                count: 0,
+                ctime: M.formatDate(M.now(), 'yyyy-MM-dd hh:mm')
+            }), this.model.attr('books').set('$', this.model.get(0)));
+        },
+
+        check: function() {
+            if (!this.model.get('type')) {
+                M.component.alerttip.show('请选择类别！');
+                return;
+            }
+
+            if (!this.model.get('name')) {
+                M.component.alerttip.show('记事本名称不能为空！');
+                return false;
+            }
+
+            if (this.model.get('desc').length > 20) {
+                M.component.alerttip.show('记事本概述不能超过20个字符');
+                return;
+            }
+
+            return true;
+        },
+
+        commited: function(res) {
+            if (!res) {
+                M.component.alerttip.show('未知错误！');
+                return;
+            }
+            res.status == 1 && (this.addBook(res.data.id), this.close());
+            M.component.alerttip.show(res.message);
+        }
+    }, 'BookForm');
 
 
-    var notesform = FormView.extend({
-        tpl: '',
-        events: {}
-    });
+    var NoteForm = M.component.Form.extend({
+        initialized: function() {
+            this.$form.addClass('noteform');
+            this.addEditor();
+
+            var _ = this;
+            this.model.attr('books').on({
+                load: function() {
+                    _.updateSelect();
+                },
+                change: function() {
+                    _.updateSelect();
+                }
+            });
+            this.updateSelect();
+        },
+
+        addEditor: function() {
+            var _ = this;
+            M.component.Editor.create(this.$form.find('.noteeditor'), function(editor) {
+                _.editor = editor;
+            });
+            return this;
+        },
+
+        updateSelect: function() {
+            var data = this.model.attr('books').toSource();
+            data.unshift({
+                id: '',
+                name: '请选择记事本'
+            });
+
+            this.$body.find('select').html(M.map(data, function(d) {
+                return '<option value="' + d.id + '">' + d.name + '</option>';
+            }).join(''));
+        },
+
+        addNote: function(id) {
+            id && (this.model.set({
+                'id': id,
+                ctime: M.formatDate(M.now(), 'yyyy-MM-dd hh:mm')
+            }), this.model.attr('notes').set('$', this.model.get(0)), this.model.attr('books').load());
+        },
+
+        pick: function() {
+            var _ = this;
+            this.$body.find('[name]').each(function() {
+                _.model.set(this.name, this.value);
+            });
+            this.model.set('content', this.editor.content());
+            return this;
+        },
+
+        check: function() {
+            if (!this.model.get('book')) {
+                M.component.alerttip.show('请选择记事本！');
+                return;
+            }
+
+            if (!this.model.get('name')) {
+                M.component.alerttip.show('记事名称不能为空！');
+                return false;
+            }
+
+            if (!this.model.get('content')) {
+                M.component.alerttip.show('记事内容不能为空！');
+                return;
+            }
+
+            return true;
+        },
+
+        commited: function(res) {
+            if (!res) {
+                M.component.alerttip.show('未知错误！');
+                return;
+            }
+            res.status == 1 && (this.addNote(res.data.id), this.close());
+            M.component.alerttip.show(res.message);
+        }
+    }, 'NoteForm');
+
+
+    function createTypeForm() {
+        var model = new My.Model('/note/notetype', {
+            types: typesmodel
+        }, {
+            name: ''
+        });
+
+        return new TypeForm('.typeform', model, {
+            title: '新建类别',
+            body: ['<form class="form" autocomplete="off" method="post">',
+                '<label>名称：<input name="name" placeholder="请输入类别名称"></label>',
+                '</form>'
+            ].join('')
+        });
+    }
+
+    function createBookForm() {
+        var model = new My.Model('/note/notebook', {
+            books: booksmodel
+        }, {
+            type: '',
+            name: '',
+            desc: ''
+        });
+
+        return new BookForm('.bookform', model, {
+            title: '新建记事本',
+            body: ['<form class="form" autocomplete="off" method="post">',
+                '<label><input type="hidden" name="type" value="{type}"></label>',
+                '<label>名称：<input name="name" placeholder="请输入记事本名称"></label>',
+                '<label>概述：<textarea name="desc" placeholder="最多可输入20个字符" rows="2"></textarea></label>',
+                '</form>'
+            ].join('')
+        });
+    }
+
+    function createNoteForm() {
+        var model = new My.Model('/note/note', {
+            books: booksmodel,
+            notes: notesmodel
+        }, {
+            book: '',
+            name: '',
+            content: '',
+            signature: ''
+        });
+
+        return new NoteForm('.noteform', model, {
+            title: '新建记事',
+            body: ['<form class="form" autocomplete="off" method="post">',
+                '<label>记事本：<select name="book"><option>请选择记事本</option></select></label>',
+                '<label>名&nbsp;&nbsp;&nbsp;&nbsp;称：<input name="name" placeholder="请输入记事名称"></label>',
+                '<label>内&nbsp;&nbsp;&nbsp;&nbsp;容：<div class="noteeditor"></div></label>',
+                '<label>签&nbsp;&nbsp;&nbsp;&nbsp;名：<input name="signature"></label>',
+                '</form>'
+            ].join('')
+        });
+    }
+
+    var typeform, bookform, noteform;
+
+    function openForm(type) {
+        var form = type === 'type' ? (typeform || (typeform = createTypeForm())) :
+            (type === 'book' ? (bookform || (bookform = createBookForm())) :
+                (noteform || (noteform = createNoteForm())));
+        form.open();
+    }
 
 
     M('article>nav>button').click(function(evt) {
-        var type = M(this).data('type');
-        var form = {
-            type: typesform,
-            book: booksform,
-            note: notesform
-        }[type];
-        form.open();
+        openForm(M(this).data('type'));
     });
-
-
-    var alerttip = My.View.extend({
-        show: function(txt) {
-            this.ui.html(txt).top(30);
-
-            var _ = this;
-            this.timer && (clearTimeout(this.timer));
-            this.timer = setTimeout(function() {
-                _.hide();
-                clearTimeout(_.timer);
-            }, 2000);
-        },
-
-        hide: function() {
-            this.ui.top(-100);
-        }
-    })('.alerttip');
 })();

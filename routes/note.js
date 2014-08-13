@@ -1,5 +1,6 @@
 var express = require('express'),
     router = express.Router(),
+    multipart = require('multipart'),
     api = require('../api/note');
 
 /* note services. */
@@ -87,6 +88,13 @@ router.get('/recovers', function(req, res) {
 
 router.get('/recover', function(req, res) {
     api.recover(parseInt(req.query.id), res.json.bind(res));
+});
+
+
+router.post('/upload', multipart({
+    uploadDir: './temp'
+}), function(req, res) {
+    api.upload(req.files['image'], res.json.bind(res));
 });
 
 

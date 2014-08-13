@@ -2,15 +2,21 @@ extends layout
 
 block header
 	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/note.css')
+	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/button.css')
+	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/form_view.css')
+	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/alert_tip.css')
+	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/editor.css')
+	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/accordion.css')
+	
 
 block content
 	header
 		h3 记个事儿吧，就不会忘了！
 	article
 		nav
-			button(title = "新建类别", data-type = "type") 类别
-			button(title = "新建记事本", data-type = "book") 记事本
-			button(title = "新建记事", data-type = "note") 记事
+			button(title = "新建类别", data-type = "type", data-label = "+类别") 类别
+			button(title = "新建记事本", data-type = "book", data-label = "+记事本") 记事本
+			button(title = "新建记事", data-type = "note", data-label = "+记事") 记事
 
 		section.clearfix
 			//- a.arrow_up
@@ -18,7 +24,7 @@ block content
 				.vbar
 				span.blur
 				ul#typelist
-			//- a.arrow_down			
+			//- a.arrow_down
 			//- a.arrow_left
 			.bookbox
 				ul.clearfix#booklist
@@ -27,12 +33,14 @@ block content
 		.notebox(style = "display: none;")
 			ul#notelist
 
-		.formbox.typeform(style = "display: none;")
-		.formbox.bookform(style = "display: none;")
-		.formbox.noteform(style = "display: none;")
-
-		include alert_tip.jade
+		.typeform
+		.bookform
+		.noteform
 
 block footer
-	script(type = "text/javascript", src = "http://lib.dodo.com.cn:8080/My.js")
+	script(type = "text/javascript", src = "http://lib.dodo.com.cn:8888/My.js")
+	script(type = "text/javascript", src = "/static/scripts/form_view.js")
+	script(type = "text/javascript", src = "/static/scripts/alert_tip.js")
+	script(type = "text/javascript", src = "/static/scripts/accordion.js")
+	script(type = "text/javascript", src = "/static/scripts/editor.js")
 	script(type = "text/javascript", src = "/static/scripts/note.js")

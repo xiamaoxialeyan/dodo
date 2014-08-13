@@ -1,0 +1,361 @@
+.component-btn{
+	position: relative;
+	display: inline-block;
+	margin: 0 10px;
+	min-width: 120px;
+	line-height: 38px;
+	overflow: hidden;
+	color: #fff;
+	font-size: 100%;
+	font-weight: bold;
+	font-family: tahoma,"Microsoft YaHei","微软雅黑",STXihei,"华文细黑",serif;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: 1px 1px 1px #333;
+	cursor: pointer;
+	outline: 0;
+	border-radius: 5px;
+}
+
+.component-btn.normal{
+	color: #8c96a0;
+	text-shadow: 1px 1px 1px #fff;
+	border: 1px solid #dce1e6;
+	box-shadow: 0 1px 2px #fff inset,0 -1px 0 #a8abae inset;
+	background: -webkit-linear-gradient(top,#f2f3f7,#e4e8ec);
+	background: -moz-linear-gradient(top,#f2f3f7,#e4e8ec);
+	background: -ms-linear-gradient(top,#f2f3f7,#e4e8ec);
+	background: -o-linear-gradient(top,#f2f3f7,#e4e8ec);
+	background: linear-gradient(top,#f2f3f7,#e4e8ec);
+}
+
+.component-btn.normal:hover{
+	background: -webkit-linear-gradient(top,#fefefe,#ebeced);
+	background: -moz-linear-gradient(top,#f2f3f7,#ebeced);
+	background: -ms-linear-gradient(top,#f2f3f7,#ebeced);
+	background: -o-linear-gradient(top,#f2f3f7,#ebeced);
+	background: linear-gradient(top,#f2f3f7,#ebeced);
+}
+
+.component-btn.dark{
+	border: 1px solid #333;
+	box-shadow: 0 1px 2px #8b8b8b inset,0 -1px 0 #3d3d3d inset;
+	background: -webkit-linear-gradient(top,#656565,#4c4c4c);
+	background: -moz-linear-gradient(top,#656565,#4c4c4c);
+	background: -ms-linear-gradient(top,#656565,#4c4c4c);
+	background: -o-linear-gradient(top,#656565,#4c4c4c);
+	background: linear-gradient(top,#656565,#4c4c4c);
+}
+
+.component-btn.dark:hover{
+	background: -webkit-linear-gradient(top,#818181,#575757);
+	background: -moz-linear-gradient(top,#818181,#575757);
+	background: -ms-linear-gradient(top,#818181,#575757);
+	background: -o-linear-gradient(top,#818181,#575757);
+	background: linear-gradient(top,#818181,#575757);
+}
+
+.component-btn.hot{
+	border: 1px solid #b42323;
+	box-shadow: 0 1px 2px #e99494 inset,0 -1px 0 #962424 inset;
+	background: -webkit-linear-gradient(top,#d53939,#b92929);
+	background: -moz-linear-gradient(top,#d53939,#b92929);
+	background: -ms-linear-gradient(top,#d53939,#b92929);
+	background: -o-linear-gradient(top,#d53939,#b92929);
+	background: linear-gradient(top,#d53939,#b92929);
+}
+
+.component-btn.hot:hover{
+	background: -webkit-linear-gradient(top,#eb6f6f,#c83c3c);
+	background: -moz-linear-gradient(top,#eb6f6f,#eb6f6f);
+	background: -ms-linear-gradient(top,#eb6f6f,#eb6f6f);
+	background: -o-linear-gradient(top,#eb6f6f,#eb6f6f);
+	background: linear-gradient(top,#eb6f6f,#eb6f6f);
+}
+
+.component-btn.sun{
+	border: 1px solid #d2a000;
+	box-shadow: 0 1px 2px #fedd71 inset,0 -1px 0 #a38b39 inset;
+	background: -webkit-linear-gradient(top,#fece34,#d8a605);
+	background: -moz-linear-gradient(top,#fece34,#d8a605);
+	background: -ms-linear-gradient(top,#fece34,#d8a605);
+	background: -o-linear-gradient(top,#fece34,#d8a605);
+	background: linear-gradient(top,#fece34,#d8a605);
+}
+
+.component-btn.sun:hover{
+	background: -webkit-linear-gradient(top,#ffd859,#e3bb38);
+	background: -moz-linear-gradient(top,#ffd859,#e3bb38);
+	background: -ms-linear-gradient(top,#ffd859,#e3bb38);
+	background: -o-linear-gradient(top,#ffd859,#e3bb38);
+	background: linear-gradient(top,#ffd859,#e3bb38);
+}
+
+.component-btn.hope{
+	border: 1px solid #64c878;
+	box-shadow: 0 1px 2px #b9ecc4 inset,0 -1px 0 #6c9f76 inset;
+	background: -webkit-linear-gradient(top,#90dfa2,#84d494);
+	background: -moz-linear-gradient(top,#90dfa2,#84d494);
+	background: -ms-linear-gradient(top,#90dfa2,#84d494);
+	background: -o-linear-gradient(top,#90dfa2,#84d494);
+	background: linear-gradient(top,#90dfa2,#84d494);
+}
+
+.component-btn.hope:hover{
+	background: -webkit-linear-gradient(top,#aaebb9,#82d392);
+	background: -moz-linear-gradient(top,#aaebb9,#82d392);
+	background: -ms-linear-gradient(top,#aaebb9,#82d392);
+	background: -o-linear-gradient(top,#aaebb9,#82d392);
+	background: linear-gradient(top,#aaebb9,#82d392);
+}
+
+.component-btn.sea{
+	border: 1px solid #1e7db9;
+	box-shadow: 0 1px 2px #8fcaee inset,0 -1px 0 #497897 inset;
+	background: -webkit-linear-gradient(top,#42a4e0,#2e88c0);
+	background: -moz-linear-gradient(top,#42a4e0,#2e88c0);
+	background: -ms-linear-gradient(top,#42a4e0,#2e88c0);
+	background: -o-linear-gradient(top,#42a4e0,#2e88c0);
+	background: linear-gradient(top,#42a4e0,#2e88c0);
+}
+
+.component-btn.sea:hover{
+	background: -webkit-linear-gradient(top,#70bfef,#4097ce);
+	background: -moz-linear-gradient(top,#70bfef,#4097ce);
+	background: -ms-linear-gradient(top,#70bfef,#4097ce);
+	background: -o-linear-gradient(top,#70bfef,#4097ce);
+	background: linear-gradient(top,#70bfef,#4097ce);
+}
+
+.component-btn.forward,
+.component-btn.back{
+ 	overflow:visible;
+}
+
+.component-btn.forward:after,	
+.component-btn.forward:before,
+.component-btn.back:after,	
+.component-btn.back:before{
+	position:absolute;
+	content: "";
+	display: block;
+	width: 28px;
+	height: 28px;
+	-webkit-transform:rotate(45deg);
+	-moz-transform:rotate(45deg);
+	transform:rotate(45deg);
+}
+
+.component-btn.forward:before{
+	width: 27px;
+	height: 27px;
+	top: 6px;
+	right: -13px;
+	clip: rect(auto auto 26px 2px);
+}
+
+.component-btn.forward:after{
+	top: 6px;
+	right: -12px;
+	clip: rect(auto auto 26px 2px);
+}
+
+.component-btn.normal.forward:before,
+.component-btn.normal.back:before{
+	background: #d6dbe0;
+}
+
+.component-btn.normal.forward:after,
+.component-btn.normal.back:after{
+	background: -webkit-linear-gradient(top left,#f2f3f7,#e4e8ec);
+	background: -moz-linear-gradient(top left,#f2f3f7,#e4e8ec);
+	background: -ms-linear-gradient(top left,#f2f3f7,#e4e8ec);
+	background: -o-linear-gradient(top left,#f2f3f7,#e4e8ec);
+	background: linear-gradient(top left,#f2f3f7,#e4e8ec);
+}
+
+.component-btn.normal.forward:after{
+	box-shadow: 0 1px 0 #fff inset,-1px 0 0 #b7babd inset;
+}
+
+.component-btn.normal.back:after{
+	box-shadow: 0 -1px 0 #b7babd inset,1px 0 0 #fff inset;
+}
+
+.component-btn.dark.forward:before,
+.component-btn.dark.back:before{
+  	background: #333;
+}
+
+.component-btn.dark.forward:after,
+.component-btn.dark.back:after{
+	background: -webkit-linear-gradient(top left,#656565,#4c4c4c);
+	background: -moz-linear-gradient(top left,#656565,#4c4c4c);
+	background: -ms-linear-gradient(top left,#656565,#4c4c4c);
+	background: -o-linear-gradient(top left,#656565,#4c4c4c);
+	background: linear-gradient(top left,#656565,#4c4c4c);
+}
+
+.component-btn.dark.forward:after{
+	box-shadow: 0 1px 0 #8B8B8B inset,-1px 0 0 #3d3d3d inset;
+}
+
+.component-btn.dark.back:after{
+	box-shadow: 0 -1px 0 #3d3d3d inset,1px 0 0 #8B8B8B inset;
+}
+
+.component-btn.hot.forward:before,
+.component-btn.hot.back:before{
+  	background: #B42323;
+}
+
+.component-btn.hot.forward:after,
+.component-btn.hot.back:after{
+	background: -webkit-linear-gradient(top left,#d53939,#b92929);
+	background: -moz-linear-gradient(top left,#d53939,#b92929);
+	background: -ms-linear-gradient(top left,#d53939,#b92929);
+	background: -o-linear-gradient(top left,#d53939,#b92929);
+	background: linear-gradient(top left,#d53939,#b92929);
+}
+
+.component-btn.hot.forward:after{
+	box-shadow: 0 1px 0 #E99494 inset,-1px 0 0 #954B4B inset;
+}
+
+.component-btn.hot.back:after{
+	box-shadow: 0 -1px 0 #954B4B inset,1px 0 0 #E99494 inset;
+}
+
+.component-btn.sun.forward:before,
+.component-btn.sun.back:before{
+  	background: #D2A000;
+}
+
+.component-btn.sun.forward:after,
+.component-btn.sun.back:after{
+	background:-webkit-linear-gradient(top left,#FECE34,#D8A605);
+	background:-moz-linear-gradient(top left,#FECE34,#D8A605);
+	background:-md-linear-gradient(top left,#FECE34,#D8A605);
+	background:-o-linear-gradient(top left,#FECE34,#D8A605);
+	background:linear-gradient(top left,#FECE34,#D8A605);
+}
+
+.component-btn.sun.forward:after{
+	box-shadow: 0 1px 0 #FEDD71 inset,-1px 0 0 #A38B39 inset;
+}
+
+.component-btn.sun.back:after{
+	box-shadow: 0 -1px 0 #A38B39 inset,1px 0 0 #FEDD71 inset;
+}
+
+.component-btn.hope.forward:before,
+.component-btn.hope.back:before{
+	background: #64C878;
+}
+
+.component-btn.hope.forward:after,
+.component-btn.hope.back:after{
+	background:-webkit-linear-gradient(top left,#90DFA2,#84D494);
+	background:-moz-linear-gradient(top left,#90DFA2,#84D494);
+	background:-ms-linear-gradient(top left,#90DFA2,#84D494);
+	background:-o-linear-gradient(top left,#90DFA2,#84D494);
+	background:linear-gradient(top left,#90DFA2,#84D494);
+}
+
+.component-btn.hope.forward:after{
+	box-shadow: 0 1px 0 #B9ECC4 inset,-1px 0 0 #6C9F76 inset;
+}
+
+.component-btn.hope.back:after{
+	box-shadow: 0 -1px 0 #6C9F76 inset,1px 0 0 #B9ECC4 inset;
+}
+
+.component-btn.sea.forward:before,
+.component-btn.sea.back:before{
+  	background: #1E7DB9;
+}
+
+.component-btn.sea.forward:after,
+.component-btn.sea.back:after{
+	background:-webkit-linear-gradient(top left,#42A4E0,#2E88C0);
+	background:-moz-linear-gradient(top left,#42A4E0,#2E88C0);
+	background:-ms-linear-gradient(top left,#42A4E0,#2E88C0);
+	background:-o-linear-gradient(top left,#42A4E0,#2E88C0);
+	background:linear-gradient(top left,#42A4E0,#2E88C0);
+}
+
+.component-btn.sea.forward:after{
+	box-shadow: 0 1px 0 #8FCAEE inset,-1px 0 0 #497897 inset;
+}
+
+.component-btn.sea.back:after{
+	box-shadow: 0 -1px 0 #497897 inset,1px 0 0 #8FCAEE inset;
+}
+
+.component-btn.back:before{
+	top: 6px;
+	left: -13px;
+	width: 27px;
+	height: 27px;
+	clip: rect(2px 26px auto auto);
+}
+
+.component-btn.back:after{
+	top: 6px;
+	left: -12px;
+	clip: rect(2px 26px auto auto);
+}
+
+.component-btn.normal.forward:hover:after,
+.component-btn.normal.back:hover:after{
+	background:-webkit-linear-gradient(top left,#fefefe,#ebeced);
+	background:-moz-linear-gradient(top left,#fefefe,#ebeced);
+	background:-ms-linear-gradient(top left,#fefefe,#ebeced);
+	background:-o-linear-gradient(top left,#fefefe,#ebeced);
+	background:linear-gradient(top left,#fefefe,#ebeced);
+}
+
+.component-btn.dark.forward:hover:after,
+.component-btn.dark.back:hover:after{
+	background:-webkit-linear-gradient(top left,#818181,#575757);
+	background:-moz-linear-gradient(top left,#818181,#575757);
+	background:-ms-linear-gradient(top left,#818181,#575757);
+	background:-o-linear-gradient(top left,#818181,#575757);
+	background:linear-gradient(top left,#818181,#575757);
+}
+
+.component-btn.hot.forward:hover:after,
+.component-btn.hot.back:hover:after{
+	background:-webkit-linear-gradient(top left,#eb6f6f,#c83c3c);
+	background:-moz-linear-gradient(top left,#eb6f6f,#c83c3c);
+	background:-ms-linear-gradient(top left,#eb6f6f,#c83c3c);
+	background:-o-linear-gradient(top left,#eb6f6f,#c83c3c);
+	background:linear-gradient(top left,#eb6f6f,#c83c3c);
+}
+
+.component-btn.sun.forward:hover:after,
+.component-btn.sun.back:hover:after{
+	background:-webkit-linear-gradient(top left,#ffd859,#e3bb38);
+	background:-moz-linear-gradient(top left,#ffd859,#e3bb38);
+	background:-ms-linear-gradient(top left,#ffd859,#e3bb38);
+	background:-o-linear-gradient(top left,#ffd859,#e3bb38);
+	background:linear-gradient(top left,#ffd859,#e3bb38);
+}
+
+.component-btn.hope.forward:hover:after,
+.component-btn.hope.back:hover:after{
+	background:-webkit-linear-gradient(top left,#aaebb9,#82d392);
+	background:-moz-linear-gradient(top left,#aaebb9,#82d392);
+	background:-ms-linear-gradient(top left,#aaebb9,#82d392);
+	background:-o-linear-gradient(top left,#aaebb9,#82d392);
+	background:linear-gradient(top left,#aaebb9,#82d392);
+}
+
+.component-btn.sea.forward:hover:after,
+.component-btn.sea.back:hover:after{
+	background:-webkit-linear-gradient(top left,#70bfef,#4097ce);
+	background:-moz-linear-gradient(top left,#70bfef,#4097ce);
+	background:-ms-linear-gradient(top left,#70bfef,#4097ce);
+	background:-o-linear-gradient(top left,#70bfef,#4097ce);
+	background:linear-gradient(top left,#70bfef,#4097ce);
+}

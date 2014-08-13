@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>表单组件</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/button.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/form_view.css">
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body>section{
+			width: 1100px;
+			margin: 0 auto;
+		}
+		body>section>header{
+			padding: 25px 0;
+		}
+		body>section>header h1{
+			margin: 10px 0;
+			font-size: 32px;
+		}
+	</style>
+</head>
+<body>
+	<section>
+		<header><h1>表单组件</h1></header>
+		<button class="component-btn normal" onclick="show()">打开</button>
+		<div id="formdemo"></div>
+	</section>
+	<script type="text/javascript" src="http://lib.dodo.com.cn:8888/My.js"></script>
+	<script type="text/javascript" src="/static/scripts/form_view.js"></script>
+	<script type="text/javascript">
+		var model = new M.Model('/demo/form', null, {
+		    name: '',
+		    desc: ''
+		});
+
+		var form = new M.component.Form('#formdemo', model, {
+		    title: '表单组件',
+		    body: ['<form class="form" autocomplete="off" method="post">',
+		        '<label>名称：<input name="name" placeholder="请输入名称"></label>',
+		        '<label>描述：<textarea name="desc" placeholder="请输入描述"></textarea></label>',
+		        '</form>'
+		    ].join('')
+		});
+
+		function show() {
+		    form.open();
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>各主流浏览器对execCommand的支持程度</title>
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		body{
+			margin-bottom: 100px;
+			font: 18px Georgia, "Times New Roman", "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", serif;
+		}
+		section{
+			width: 800px;
+			margin: 0 auto;
+		}
+		header{
+			text-align: center;
+			padding: 25px 0;
+		}
+		header h1{
+			margin: 10px 0;
+			font-size: 32px;
+		}
+		pre{
+			color: #999;
+			font-size: 12px;
+			font-family: Georgia;
+			text-align: right;
+		}
+		table{
+			width: 100%;
+			border-collapse: collapse;
+			border-spacing: 0;
+			border: 1px solid #ccc;
+			box-shadow: 0 1px 5px #ccc;
+		}
+		tr{
+			height: 45px;
+			line-height: 45px;
+			-webkit-transition: all 0.1s ease-in-out;
+			-moz-transition: all 0.1s ease-in-out;
+			-o-transition: all 0.1s ease-in-out;
+			-ms-transition: all 0.1s ease-in-out;
+			transition: all 0.1s ease-in-out;
+		}
+		tr:nth-child(even){
+			background: #efefef;
+		}
+		tr:hover{
+			background: #fbf8e9;
+		}
+		th,td{
+			text-align: center;
+			border-left: 1px solid #ccc;
+			border-top: 1px solid #ccc;
+		}
+		th{
+			background-color: #dce9f9;
+	        background-image: -webkit-linear-gradient(top, #ebf3fc, #dce9f9);
+	        background-image: -moz-linear-gradient(top, #ebf3fc, #dce9f9);
+	        background-image: -ms-linear-gradient(top, #ebf3fc, #dce9f9);
+	        background-image: -o-linear-gradient(top, #ebf3fc, #dce9f9);
+	        background-image: linear-gradient(top, #ebf3fc, #dce9f9);
+	        box-shadow: 0 1px 0 rgba(255,255,255,.8) inset;
+	        text-shadow: 0 1px 0 rgba(255,255,255,.5);
+		}
+		td{
+			color: #f69;
+		}
+		td i{
+			color: #00f;
+		}
+		td:nth-child(2){
+			color: #999;
+			font-size: 14px;
+		}
+	</style>
+</head>
+<body>
+	<section>
+		<header>
+			<h1>各主流浏览器对execCommand的支持程度</h1>
+			<pre>2014-8-6 13:45 by Luoying</pre>
+		</header>
+		<table>
+			<thead>
+				<tr><th>command(常用)</th><th>说明</th><th>chrome</th><th>firefox</th><th>IE(11)</th></tr>
+			</thead>
+			<tbody>
+				<tr><td>backColor</td><td>设置当前选中区的背景颜色</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>bold</td><td>切换当前选中区的粗体标签</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>copy</td><td>将当前选中区内容复制到剪贴板</td><td><i>No</i></td><td><i>No</i></td><td>Yes</td></tr>
+				<tr><td>createLink</td><td>插入超链接标签</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>cut</td><td>将当前选中区内容剪切到剪贴板</td><td><i>No</i></td><td><i>No</i></td><td>Yes</td></tr>
+				<tr><td>delete</td><td>删除当前选中区</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>fontName</td><td>设置当前选中区的字体</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>fontSize</td><td>设置当前选中区的字体大小</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>foreColor</td><td>设置当前选中区的前景(文本)颜色</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>forwardDelete</td><td>向前删除当前选中区</td><td>Yes</td><td>Yes</td><td><i>No</i></td></tr>
+				<tr><td>heading</td><td>插入标题标签(h1)</td><td><i>No</i></td><td>Yes</td><td><i>No</i></td></tr>
+				<tr><td>indent</td><td>增加选中文本的缩进</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>insertImage</td><td>插入图片标签(img)</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>insertHTML</td><td>插入HTML内容</td><td>Yes</td><td>Yes</td><td><i>No</i></td></tr>
+				<tr><td>insertLineBreak</td><td>插入换行标签(br)</td><td>Yes</td><td><i>No</i></td><td><i>No</i></td></tr>
+				<tr><td>insertOrderedList</td><td>切换当前选中区的编号列表标签</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>insertUnorderedList</td><td>切换当前选中区的项目符号列表标签</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>insertParagraph</td><td>用换行覆盖当前选中区</td><td>Yes</td><td>Yes</td><td><i>No</i></td></tr>
+				<tr><td>insertText</td><td>插入文本内容</td><td>Yes</td><td>Yes</td><td><i>No</i></td></tr>
+				<tr><td>italic</td><td>切换当前选中区的斜体标签</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>justifyCenter</td><td>将当前选中文本置中</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>justifyLeft</td><td>将当前选中文本左对齐</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>justifyRight</td><td>将当前选中文本右对齐</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>justifyFull</td><td>将当前选中文本两端对齐</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>justifyNone</td><td>将当前选中文本不对齐</td><td>Yes</td><td><i>No</i></td><td>Yes</td></tr>
+				<tr><td>open</td><td>打开对话框</td><td><i>No</i></td><td><i>No</i></td><td>Yes</td></tr>
+				<tr><td>outdent</td><td>减少选中文本的缩进</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>paste</td><td>粘贴内容覆盖选中区</td><td><i>No</i></td><td><i>No</i></td><td>Yes</td></tr>
+				<tr><td>print</td><td>打开打印对话框</td><td>Yes</td><td><i>No</i></td><td>Yes</td></tr>
+				<tr><td>redo</td><td>恢复上一次的撤销</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>removeFormat</td><td>删除格式化标签</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>selectAll</td><td>选中全部内容</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>saveAs</td><td>将当前Web页面保存为文件</td><td><i>No</i></td><td><i>No</i></td><td>Yes</td></tr>
+				<tr><td>strikeThrough</td><td>切换当前选中区的删除线标签</td><td>Yes</td><td>Yes</td><td><i>No</i></td></tr>
+				<tr><td>subscript</td><td>切换当前选中区的下标标签</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>superscript</td><td>切换当前选中区的上标标签</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>underline</td><td>切换当前选中区的下划线标签</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>undo</td><td>撤销上一次的格式化操作</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>unlink</td><td>删除超链接标签</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>useCSS</td><td>对当前选中区应用CSS效果</td><td>Yes</td><td>Yes</td><td><i>No</i></td></tr>
+				<tr><td>hiliteColor</td><td>高亮当前选中区</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+				<tr><td>unselect</td><td>反选当前选中区</td><td>Yes</td><td><i>No</i></td><td>Yes</td></tr>
+				<tr><td>styleWithCSS</td><td>对当前选中区应用CSS效果</td><td>Yes</td><td>Yes</td><td><i>No</i></td></tr>
+			</tbody>
+		</table>
+	</section>	
+</body>
+</html>

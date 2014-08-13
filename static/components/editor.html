@@ -1,0 +1,128 @@
+<div class="component-editor">
+	<header class="component-editor-header">
+		<nav class="component-editor-commands">
+			<a title="撤销" class="no" data-cmd="undo"></a>
+			<a title="恢复" class="no" data-cmd="redo"></a>
+			<i></i>
+			<a title="加粗" data-cmd="bold" data-alt="B"></a>
+			<a title="斜体" data-cmd="italic" data-alt="I"></a>
+			<a title="下划线" data-cmd="underline" data-alt="U"></a>
+			<a title="删除线" data-cmd="linethrough" data-alt="abc"></a>
+			<a title="上标" data-cmd="sup" data-alt="X"></a>
+			<a title="下标" data-cmd="sub" data-alt="X"></a>
+			<i></i>
+			<a title="字体" data-cmd="family" data-alt="F">
+				<ul class="component-editor-menu" style="display:none">
+					<li class="simsun def cur">宋体(默认)</li>
+					<li class="simsun">宋体</li>
+					<li class="nsimsun">新宋体</li>
+					<li class="fangsong">仿宋</li>
+					<li class="simhei">黑体</li>
+					<li class="kaiti">楷体</li>
+					<li class="lisu">隶书</li>
+					<li class="youyuan">幼圆</li>
+					<li class="microsoft-yahei">微软雅黑</li>
+					<li class="arial">Arial</li>
+					<li class="arial-black">Arial Black</li>
+					<li class="comic-sans-ms">Comic Sans MS</li>
+					<li class="courier">Courier</li>
+					<li class="systems">System</li>
+					<li class="times-new-roman">Times New Roman</li>
+					<li class="verdana">Verdana</li>
+					<li class="georgia">Georgia</li>
+				</ul>
+			</a>
+			<a title="字体大小" data-cmd="size" data-alt="T">
+				<ul class="component-editor-menu no-line-height" style="display:none">
+					<li class="medium def cur">默认大小</li>
+					<li class="x-small">极小</li>
+					<li class="small">特小</li>
+					<li class="medium">小</li>
+					<li class="large">中</li>
+					<li class="x-large">大</li>
+					<li class="xx-large">特大</li>
+					<li class="xxx-large">极大</li>
+				</ul>
+			</a>
+			<a title="字体颜色" data-cmd="color" data-alt="A">
+				<ul class="component-editor-menu left coluor" style="display:none">
+					<li class="black def cur">黑色(默认)</li>
+					<li class="black">黑色</li>
+					<li class="darkred">暗红色</li>
+					<li class="purple">紫色</li>
+					<li class="red">红色</li>
+					<li class="f0f">鲜粉色</li>
+					<li class="navy">深蓝色</li>
+					<li class="blue">蓝色</li>
+					<li class="c0ff">湖蓝色</li>
+					<li class="c008080">湖绿色</li>
+					<li class="green">绿色</li>
+					<li class="olive">橄榄色</li>
+					<li class="palegreen">浅绿色</li>
+					<li class="orange">橙色</li>
+					<li class="yellow">黄色</li>
+					<li class="gray">灰色</li>
+					<li class="silver">银色</li>
+					<li class="white">白色</li>
+				</ul>
+			</a>
+			<a title="字体背景" data-cmd="background" data-alt="ab">
+				<ul class="component-editor-menu left coluor" style="display:none">
+					<li class="white def cur">白色(默认)</li>
+					<li class="black">黑色</li>
+					<li class="darkred">暗红色</li>
+					<li class="purple">紫色</li>
+					<li class="red">红色</li>
+					<li class="f0f">鲜粉色</li>
+					<li class="navy">深蓝色</li>
+					<li class="blue">蓝色</li>
+					<li class="c0ff">湖蓝色</li>
+					<li class="c008080">湖绿色</li>
+					<li class="green">绿色</li>
+					<li class="olive">橄榄色</li>
+					<li class="palegreen">浅绿色</li>
+					<li class="orange">橙色</li>
+					<li class="yellow">黄色</li>
+					<li class="gray">灰色</li>
+					<li class="silver">银色</li>
+					<li class="white">白色</li>
+				</ul>
+			</a>
+			<a title="清除格式" data-cmd="clear" data-alt="A"></a>
+			<i></i>
+			<a title="对齐方式" data-cmd="justify">
+				<ul class="component-editor-menu left icon" style="display:none">
+					<li class="left">左对齐</li>
+					<li class="center">居中对齐</li>
+					<li class="right">右对齐</li>
+					<li class="full">两端对齐</li>
+				</ul>
+			</a>
+			<a title="设置列表" data-cmd="list">
+				<ul class="component-editor-menu left icon" style="display:none">
+					<li class="order">数字列表</li>
+					<li class="unorder">符号列表</li>
+				</ul>
+			</a>
+			<a title="设置缩进" data-cmd="indent">
+				<ul class="component-editor-menu left icon" style="display:none">
+					<li class="indent">增加缩进</li>
+					<li class="outdent">减少缩进</li>
+				</ul>
+			</a>
+			<i></i>
+			<a title="添加图片" data-cmd="image"></a>
+			<a title="添加表情" data-cmd="face">
+				<ul class="component-editor-menu" style="display:none"></ul>
+			</a>
+			<a title="添加超链接" data-cmd="link"></a>
+			<a title="删除超链接" data-cmd="unlink"></a>
+			<a title="添加日期" data-cmd="date"></a>
+		</nav>
+	</header>
+	<article class="component-editor-content">
+		<iframe src="/components/editor_body.html"></iframe>
+	</article>
+	<div class="component-editor-url-dialog"></div>
+	<div class="component-editor-image-dialog"></div>
+</div>

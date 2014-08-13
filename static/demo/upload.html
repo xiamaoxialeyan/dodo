@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HTML5异步上传文件</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/button.css">
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		section{
+			width: 1100px;
+			margin: 0 auto;
+		}
+		header{
+			text-align: center;
+			padding: 25px 0;
+		}
+		header h1{
+			margin: 10px 0;
+			font-size: 32px;
+		}
+		input[type="file"]{
+			display: block;
+			position: absolute;
+			top: 0;
+			left: -70px;
+			width: 148px;
+			height: 28px;
+			line-height: 28px;
+			padding: 0;
+			opacity: 0.0001;
+			cursor: pointer;
+		}
+
+		#fileinfo{
+			height: 100px;
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+<body>
+	<section>
+		<header><h1>HTML5异步上传文件（支持多文件上传），以图片为例：</h1></header>
+		<a href="javascript:;" class="component-btn dark">
+			单文件
+			<input type="file" name="image" accept="image/*">
+		</a>
+		<a href="javascript:;" class="component-btn hot">
+			多文件
+			<input type="file" name="image" accept="image/*" multiple="multiple">
+		</a>
+		<p id="fileinfo"></p>
+		<button id="upload" class="component-btn sea">上 传</button>
+	</section>
+
+	<script type="text/javascript" src="http://lib.dodo.com.cn:8888/My.js"></script>
+	<script type="text/javascript">
+		var files = null;
+
+		var uploader = new M.Multipart('/demo/upload', {
+		    name: 'picture',
+		    filters: ['image/*'],
+		    maxSize: 10
+		});
+
+		uploader.on({
+		    end: function(evt) {
+		        var res = JSON.parse(evt.data);
+		        res.code != 1 ? alert(res.message) : showResult(res.path);
+		    },
+		    error: function(evt) {
+		        var err = evt.data;
+		        alert(err.message);
+		    }
+		});
+
+		M('input[type="file"]').on({
+		    change: function(evt) {
+		        files = this.files;
+		        showInfo(files);
+		    }
+		});
+
+		M('#upload').click(function(evt) {
+		    uploader.upload(files);
+		});
+
+		function showInfo(files) {
+		    var fs = M.map(files, function(file) {
+		        return file.name;
+		    });
+		    M('#fileinfo').text('选择的图片有：' + fs.join(';'));
+		}
+
+		function showResult(path) {
+		    M.isArray(path) || (path = [path]);
+		    M('#fileinfo').text('上传成功，图片路径分别为：' + path.join(';'));
+		}
+	</script>
+</body>
+</html>

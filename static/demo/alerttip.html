@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>简单提示条</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/button.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/alert_tip.css">
+	<style type="text/css">
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		section{
+			width: 1100px;
+			margin: 0 auto;
+		}
+		header{
+			padding: 25px 0;
+		}
+		header h1{
+			margin: 10px 0;
+			font-size: 32px;
+		}
+	</style>
+</head>
+<body>
+	<section>
+		<header><h1>简单提示条</h1></header>
+		<button class="component-btn normal" onclick="tip()">显示</button>
+	</section>
+	<script type="text/javascript" src="http://lib.dodo.com.cn:8888/My.js"></script>
+	<script type="text/javascript" src="/static/scripts/alert_tip.js"></script>
+	<script type="text/javascript">
+		M.component.alerttip.show("页面初始化完毕！2秒钟之后我会自动关闭！");
+
+		function tip () {
+			M.component.alerttip.show("这是一条简单提示！");
+		}
+	</script>
+</body>
+</html>

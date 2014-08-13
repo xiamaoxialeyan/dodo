@@ -5,10 +5,12 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     index = require('./routes/index'),
+    components = require('./routes/components'),
     users = require('./routes/users'),
     data = require('./routes/web'),
     gallary = require('./routes/gallary'),
-    note = require('./routes/note');
+    note = require('./routes/note'),
+    demo = require('./routes/demo');
 
 var app = express();
 
@@ -24,14 +26,16 @@ app.use(cookieParser());
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/lib', express.static(path.join(__dirname, 'lib')));
-app.use('/photo', express.static(path.join(__dirname, 'uploads/photo')));
+app.use('/file', express.static(path.join(__dirname, 'uploads')));
 
 
 app.use('/', index);
+app.use('/components', components);
 app.use('/users', users);
 app.use('/web', data);
 app.use('/gallary', gallary);
 app.use('/note', note);
+app.use('/demo', demo);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

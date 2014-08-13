@@ -1,0 +1,70 @@
+.component-accordion{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.component-accordion-item{}
+
+.component-accordion-title{
+	position: relative;
+	height: 30px;
+	line-height: 30px;
+	padding: 0 10px;
+	cursor: pointer;
+	background: -webkit-linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	background: -moz-linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	background: -ms-linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	background: -o-linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	background: linear-gradient(top,#fff 20%,#eee 80%,#efefef);
+	box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 1px 0px 0px 0px rgba(255,255,255,0.9) inset, 0px 2px 2px rgba(0,0,0,0.1);
+}
+
+.component-accordion-title:hover{
+	background: #fff;
+}
+
+.component-accordion-title>h5{
+	margin: 0;
+	padding: 0;
+	color: #777;
+	font-size: 14px;
+	font-weight: normal;
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+}
+
+.component-accordion-item.cur>.component-accordion-title,
+.component-accordion-item.cur>.component-accordion-title:hover{
+	background: #c6e1ec;
+	box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 0px 2px 2px rgba(0,0,0,0.1);
+}
+
+.component-accordion-title:hover>h5,
+.component-accordion-item.cur>.component-accordion-title>h5{
+	color: #3d7489;
+	text-shadow: 0px 1px 1px rgba(255,255,255, 0.6);
+}
+
+.component-accordion-content{
+	position: relative;
+	height: 0px;
+	overflow: hidden;
+	padding: 0 10px;
+	font-size: 14px;
+	background: rgba(255, 255, 255, 0.5);
+	-webkit-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	-moz-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	-o-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	-ms-transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+	transition: height 0.3s ease-in-out, box-shadow 0.6s linear;
+}
+
+.component-accordion-item.cur>.component-accordion-content{
+	height: 100px;
+	box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3);
+	-webkit-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	-moz-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	-o-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	-ms-transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+	transition: height 0.5s ease-in-out, box-shadow 0.1s linear;
+}

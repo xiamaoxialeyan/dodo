@@ -25,5 +25,8 @@ router.get('/api', function(req, res) {
         title: 'API Debug - DoDo'
     });
 });
+router.get('/editor', function(req, res) {
+    res.render('editor');
+});
 
 module.exports = router;

@@ -1,0 +1,616 @@
+.component-editor{
+	position: relative;
+	width: 100%;
+	height: 100%;
+	font: 18px Georgia, "Times New Roman", "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", serif;
+	background: #fff;
+}
+
+.component-editor-header{
+	position: absolute;
+	width: 100%;
+	padding: 5px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.component-editor-commands{
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.component-editor-commands::after{
+	content: "."; 
+	display: block; 
+	height: 0; 
+	clear: both; 
+	visibility: hidden;
+}
+
+.component-editor-commands>i{
+	float: left;
+	width: 1px;
+	height: 24px;
+	background: #a0a0a0;
+	margin: 0 5px;
+}
+
+.component-editor-commands>a{
+	position: relative;
+	float: left;
+	width: 24px;
+	height: 24px;
+	margin: 0 2px;
+	color: #000;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	text-decoration: none;
+	background: transparent;
+	border: 1px solid transparent;
+	cursor: pointer;
+	-webkit-transition: all ease-out .25s;
+	-moz-transition: all ease-out .25s;
+	transition: all ease-out .25s;
+}
+
+.component-editor-commands>a.cur,
+.component-editor-commands>a:hover{
+	background: -webkit-linear-gradient(top,#fff,#efefef,#fff);
+	background: -moz-linear-gradient(top,#fff,#efefef,#fff);
+	background: -o-linear-gradient(top,#fff,#efefef,#fff);
+	background: linear-gradient(top,#fff,#efefef,#fff);
+	border-color: #e0e0e0;
+	border-radius: 3px;
+}
+
+.component-editor-commands>a::before{
+	content: attr(data-alt);
+	display: block;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	margin-top: 4px;
+	margin-left: 4px;
+	text-shadow: 0 0 1px rgba(0,0,0,.5);
+	-webkit-transition: all ease-out .25s;
+	-moz-transition: all ease-out .25s;
+	transition: all ease-out .25s;
+}
+
+.component-editor-commands>a[data-cmd="sup"],
+.component-editor-commands>a[data-cmd="sub"],
+.component-editor-commands>a[data-cmd="clear"]{
+	text-align: left;
+}
+
+.component-editor-commands>a[data-cmd="bold"]::before{
+	font-weight: bolder;
+}
+
+.component-editor-commands>a[data-cmd="italic"]::before{
+	font-style: italic;
+}
+
+.component-editor-commands>a[data-cmd="underline"]::before{
+	text-decoration: underline;
+}
+
+.component-editor-commands>a[data-cmd="linethrough"]::before{
+	margin-left: 0;
+	font-size: 12px;
+	text-decoration: line-through;
+}
+
+.component-editor-commands>a[data-cmd="sup"]::after,
+.component-editor-commands>a[data-cmd="sub"]::after{
+	position: absolute;
+	top: 0;
+	right: 0;
+	content: '2';
+	font-size: 12px;
+	font-family: arial;
+}
+
+.component-editor-commands>a[data-cmd="sub"]::after{
+	top: inherit;
+	bottom: 0;
+}
+
+.component-editor-commands>a[data-cmd="color"]::before{
+	color: blue;
+}
+
+.component-editor-commands>a[data-cmd="background"]::before{
+	font-size: 12px;
+	background: #ccc;
+}
+
+.component-editor-commands>a[data-cmd="clear"]::before{
+	font-weight: bold;
+	font-style: italic;
+	text-decoration: underline;
+}
+
+.component-editor-commands>a[data-cmd="clear"]::after{
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	content: 'x';
+	font-size: 14px;
+	font-family: arial;
+}
+
+.component-editor-commands>a[data-cmd="justify"]::before{
+	background: url(/static/images/editor.png) no-repeat -224px -112px;
+}
+
+.component-editor-commands>a[data-cmd="list"]::before{
+	background: url(/static/images/editor.png) no-repeat -256px -112px;
+}
+
+.component-editor-commands>a[data-cmd="indent"]::before{
+	background: url(/static/images/editor.png) no-repeat -288px -112px;
+}
+
+.component-editor-commands>a[data-cmd="image"]::before{
+	background: url(/static/images/editor.png) no-repeat -128px -112px;
+}
+
+.component-editor-commands>a[data-cmd="face"]::before{
+	background: url(/static/images/editor.png) no-repeat 0 -112px;
+}
+
+.component-editor-commands>a[data-cmd="link"]::before{
+	background: url(/static/images/editor.png) no-repeat -160px -112px;
+}
+
+.component-editor-commands>a[data-cmd="unlink"]::before{
+	background: url(/static/images/editor.png) no-repeat -160px -112px;
+}
+
+.component-editor-commands>a[data-cmd="unlink"]::after{
+	position: absolute;
+	bottom: 2px;
+	right: 0;
+	content: 'x';
+	font-size: 14px;
+	font-family: arial;
+}
+
+.component-editor-commands>a[data-cmd="date"]::before{
+	background: url(/static/images/editor.png) no-repeat -64px -112px;
+}
+
+.component-editor-commands>a[data-cmd="undo"]::before{
+	background: url(/static/images/editor.png) no-repeat 0 -64px;
+}
+
+.component-editor-commands>a[data-cmd="undo"].no::before{
+	background-position: 0 -80px;
+}
+
+.component-editor-commands>a[data-cmd="redo"]::before{
+	background: url(/static/images/editor.png) no-repeat -32px -64px;
+}
+
+.component-editor-commands>a[data-cmd="redo"].no::before{
+	background-position: -32px -80px;
+}
+
+.component-editor-menu{
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	margin-top: 10px;
+	list-style: none;
+	font-size: 14px;
+	font-weight: normal;
+	border: 1px solid #6d7a89;
+	border-radius: 3px;
+	background: #fff;
+	box-shadow: 0 0 9px #999;
+	white-space: nowrap;
+	opacity: 0;
+	-webkit-transition: all ease-out .35s;
+	-moz-transition: all ease-out .35s;
+	transition: all ease-out .35s;
+}
+
+.component-editor-menu.visibility{
+	opacity: 1;
+}
+
+.component-editor-menu.left{
+	text-align: left;
+}
+
+.component-editor-menu>li{
+	padding: 5px 10px;
+	line-height: 18px;
+}
+
+.component-editor-menu.no-line-height>li{
+	line-height: normal;
+}
+
+.component-editor-menu>li:hover{
+	background: #DFF4F7;
+}
+
+.component-editor-menu>li.def{
+	font-weight: bold;
+	line-height: 22px;
+	border-bottom: 1px solid #e9e9e9;
+}
+
+.component-editor-menu>li.cur{
+	background: #D6CFCF;
+}
+
+.component-editor-menu>li.simsun{
+	font-family: simsun,"宋体";
+}
+
+.component-editor-menu>li.nsimsun{
+	font-family: nsimsun,"新宋体";
+}
+
+.component-editor-menu>li.fangsong{
+	font-family: fangsong,"仿宋";
+}
+
+.component-editor-menu>li.simhei{
+	font-family: simhei,"黑体";
+}
+
+.component-editor-menu>li.kaiti{
+	font-family: kaiti,"楷体";
+}
+
+.component-editor-menu>li.lisu{
+	font-family: lisu,"隶书";
+}
+
+.component-editor-menu>li.youyuan{
+	font-family: youyuan,"幼圆";
+}
+
+.component-editor-menu>li.microsoft-yahei{
+	font-family: "Microsoft yahei","微软雅黑";
+}
+
+.component-editor-menu>li.arial{
+	font-family: Arial;
+}
+
+.component-editor-menu>li.arial-black{
+	font-family: "Arial Black";
+}
+
+.component-editor-menu>li.comic-sans-ms{
+	font-family: "Comic Sans MS";
+}
+
+.component-editor-menu>li.courier{
+	font-family: Courier;
+}
+
+.component-editor-menu>li.system{
+	font-family: System;
+}
+
+.component-editor-menu>li.times-new-roman{
+	font-family: "Times New Roman";
+}
+
+.component-editor-menu>li.verdana{
+	font-family: Verdana;
+}
+
+.component-editor-menu>li.georgia{
+	font-family: Georgia;
+}
+
+.component-editor-menu>li.x-small{
+	font-size: x-small;
+}
+
+.component-editor-menu>li.small{
+	font-size: small;
+}
+
+.component-editor-menu>li.medium{
+	font-size: medium;
+}
+
+.component-editor-menu>li.large{
+	font-size: large;
+}
+
+.component-editor-menu>li.x-large{
+	font-size: x-large;
+}
+
+.component-editor-menu>li.xx-large{
+	font-size: xx-large;
+}
+
+.component-editor-menu>li.xxx-large{
+	font-size: -webkit-xxx-large;
+	font-size: -moz-xxx-large;
+	font-size: xxx-large;
+}
+
+.component-editor-menu.coluor>li::before{
+	content: '';
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	margin: -2px 10px;
+	border-radius: 2px;
+}
+
+.component-editor-menu>li.black{
+	color: black;
+}
+
+.component-editor-menu>li.black::before{
+	background: black;
+}
+
+.component-editor-menu>li.darkred{
+	color: darkred;
+}
+
+.component-editor-menu>li.darkred::before{
+	background: darkred;
+}
+
+.component-editor-menu>li.purple{
+	color: purple;
+}
+
+.component-editor-menu>li.purple::before{
+	background: purple;
+}
+
+.component-editor-menu>li.red{
+	color: red;
+}
+
+.component-editor-menu>li.red::before{
+	background: red;
+}
+
+.component-editor-menu>li.f0f{
+	color: #f0f;
+}
+
+.component-editor-menu>li.f0f::before{
+	background: #f0f;
+}
+
+.component-editor-menu>li.navy{
+	color: navy;
+}
+
+.component-editor-menu>li.navy::before{
+	background: navy;
+}
+
+.component-editor-menu>li.blue{
+	color: blue;
+}
+
+.component-editor-menu>li.blue::before{
+	background: blue;
+}
+
+.component-editor-menu>li.c0ff{
+	color: #0ff;
+}
+
+.component-editor-menu>li.c0ff::before{
+	background: #0ff;
+}
+
+.component-editor-menu>li.c008080{
+	color: #008080;
+}
+
+.component-editor-menu>li.c008080::before{
+	background: #008080;
+}
+
+.component-editor-menu>li.green{
+	color: green;
+}
+
+.component-editor-menu>li.green::before{
+	background: green;
+}
+
+.component-editor-menu>li.olive{
+	color: olive;
+}
+
+.component-editor-menu>li.olive::before{
+	background: olive;
+}
+
+.component-editor-menu>li.palegreen{
+	color: palegreen;
+}
+
+.component-editor-menu>li.palegreen::before{
+	background: palegreen;
+}
+
+.component-editor-menu>li.orange{
+	color: orange;
+}
+
+.component-editor-menu>li.orange::before{
+	background: orange;
+}
+
+.component-editor-menu>li.yellow{
+	color: yellow;
+}
+
+.component-editor-menu>li.yellow::before{
+	background: yellow;
+}
+
+.component-editor-menu>li.gray{
+	color: gray;
+}
+
+.component-editor-menu>li.gray::before{
+	background: gray;
+}
+
+.component-editor-menu>li.silver{
+	color: silver;
+}
+
+.component-editor-menu>li.silver::before{
+	background: silver;
+}
+
+.component-editor-menu>li.white{
+	color: white;
+	text-shadow: 1px 1px 0px #ccc;
+}
+
+.component-editor-menu>li.white::before{
+	background: white;
+	border: 1px solid #ccc;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.component-editor-menu.icon>li::before{
+	content: '';
+	display: inline-block;
+	width: 14px;
+	height: 14px;
+	margin: -2px 5px;
+	background-image: url(/static/images/editor.png);
+	background-repeat: no-repeat;
+}
+
+.component-editor-menu>li.left::before{
+	background-position: -288px -160px;
+}
+
+.component-editor-menu>li.center::before{
+	background-position: -256px -160px;
+}
+
+.component-editor-menu>li.right::before{
+	background-position: -320px -160px;
+}
+
+.component-editor-menu>li.full::before{
+	background-position: -288px -160px;
+}
+
+.component-editor-menu>li.order::before{
+	background-position: -160px -160px;
+}
+
+.component-editor-menu>li.unorder::before{
+	background-position: -128px -160px;
+}
+
+.component-editor-menu>li.indent::before{
+	background-position: -224px -160px;
+}
+.component-editor-menu>li.outdent::before{
+	background-position: -192px -160px;
+}
+
+.component-editor-content{
+	height: 100%;
+	padding: 5px;
+	padding-top: 40px;
+	outline: none;
+	cursor: text;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.component-editor-content>iframe{
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+
+.component-editor .component-form-win{
+	width: 510px;
+}
+
+.component-editor .component-form-win.visibility{
+	top: 50px;
+}
+
+
+.component-editor .editor-form{
+	padding: 1em 2em;
+}
+
+.component-editor .image-form{
+	padding: 1em 2em;
+}
+
+.component-accordion-content.broswer p{
+	margin: 0;
+	padding: 5px;
+	line-height: 32px;
+	color: #777;
+	text-indent: 2em;
+}
+
+.component-accordion-content.broswer a.component-btn{
+	float: right;
+	min-width: 100px;
+	line-height: 30px;
+	text-indent: 0;
+}
+
+.component-accordion-content.broswer a.component-btn input{
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -70px;
+	width: 148px;
+	height: 28px;
+	line-height: 28px;
+	padding: 0;
+	opacity: 0.0001;
+	cursor: pointer;
+}
+
+.component-accordion-content.broswer span{
+	display: block;
+	overflow: hidden;
+	color: red;
+	text-align: center;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.component-accordion-item.cur>.component-accordion-content.url{
+	height: 50px!important;
+}
