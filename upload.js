@@ -26,7 +26,7 @@ function ext(type) {
         "image/bmp": "bmp",
         "image/gif": "gif",
         "image/ief": "ief",
-        "image/jpeg": "jpe",
+        "image/jpeg": "jpg",
         "image/png": "png",
         "image/svg+xml": "svg",
         "image/tiff": "tiff",
