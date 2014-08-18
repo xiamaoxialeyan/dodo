@@ -16,6 +16,12 @@
 	border-radius: 3px;
 	background: #fff;
 	box-shadow: 0 0 9px #999;
+	opacity: 0;
+	transition: all .35s ease-out;
+}
+
+.component-emoticon.visibility{
+	opacity: 1;
 }
 
 .component-emoticon-header{
@@ -65,7 +71,7 @@
 .component-emoticon-stack{
 	flex: 1;
 	margin: 0;
-	padding: 0;
+	padding: 3px;
 	list-style: none;
 	display: flex;
 	flex-flow: row wrap;
@@ -73,13 +79,18 @@
 }
 
 .component-emoticon-stack li{
-	padding: 8px;
-	box-sizing: border-box;
+	padding: 7px;
 	cursor: pointer;
 }
 
-.component-emoticon-stack ul li:hover{
-	border: 1px solid #ccc;
+.component-emoticon-stack li:hover{
+	border-radius: 5px;
+	background: -webkit-linear-gradient(top,#fff,#efefef,#fff);
+	background: -moz-linear-gradient(top,#fff,#efefef,#fff);
+	background: -ms-linear-gradient(top,#fff,#efefef,#fff);
+	background: -o-linear-gradient(top,#fff,#efefef,#fff);
+	background: linear-gradient(top,#fff,#efefef,#fff);
+	box-shadow: 1px 0 2px #e0e0e0,0 1px 2px #e0e0e0,-1px 0 2px #e0e0e0,0 -1px 2px #e0e0e0;
 }
 
 .component-emoticon-stack li>img{

@@ -23,17 +23,14 @@
 
         events: {
             'click header>a': function(evt, view) {
-                evt.stopPropagation();
                 evt.preventDefault();
                 view.close();
             },
             'click .component-emoticon-nav>a': function(evt, view) {
-                evt.stopPropagation();
                 evt.preventDefault();
                 view.toggle(this.title, M(this).index() - 1);
             },
             'click .component-emoticon-stacks': function(evt, view) {
-                evt.stopPropagation();
                 evt.preventDefault();
                 evt = evt.target;
                 evt.tagName === 'IMG' && (evt = evt.parentNode);
@@ -44,7 +41,6 @@
                 view.stack(view.seq + (evt.wheelDelta > 0 ? -1 : 1));
             },
             'click .component-emoticon-stacks-nav': function(evt, view) {
-                evt.stopPropagation();
                 evt.preventDefault();
                 evt = evt.target;
                 evt.tagName === 'A' && (view.stack(M(evt).index() + 1));
@@ -59,10 +55,14 @@
         },
 
         renderafter: function() {
+            var _ = this;
+            this.$body = this.ui.find('.component-emoticon').globalclick(function() {
+                _.close();
+            });
             this.$title = this.ui.find('.component-emoticon-header h1');
-            this.$pointer = this.ui.find('nav>i');
             this.$emojilist = this.ui.find('.component-emoticon-stacks');
             this.$stacknav = this.ui.find('.component-emoticon-stacks-nav');
+            this.$pointer = this.ui.find('nav>i');
             return this;
         },
 
@@ -127,11 +127,13 @@
             this.name || (this.toggle(this.initializeName, 0));
             this.ui.show();
             xy && this.ui.left(xy.left);
+            this.$body.show().delay(20, this.$body.addClass, 'visibility');
             return this;
         },
 
         close: function() {
-            this.ui.hide();
+            this.$body.removeClass('visibility').delay(350, this.$body.hide);
+            this.ui.hide(350);
             return this;
         }
     }, 'Emoticon');

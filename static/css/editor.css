@@ -51,7 +51,6 @@
 	text-align: center;
 	text-decoration: none;
 	background: transparent;
-	border: 1px solid transparent;
 	cursor: pointer;
 	transition: all ease-out .25s;
 }
@@ -62,8 +61,8 @@
 	background: -moz-linear-gradient(top,#fff,#efefef,#fff);
 	background: -ms-linear-gradient(top,#fff,#efefef,#fff);
 	background: -o-linear-gradient(top,#fff,#efefef,#fff);
-	background: linear-gradient(top,#fff,#efefef,#fff);
-	border-color: #e0e0e0;
+	background: linear-gradient(top,#fff,#efefef,#fff);	
+	box-shadow: 1px 0 1px #e0e0e0,0 1px 1px #e0e0e0,-1px 0 1px #e0e0e0,0 -1px 1px #e0e0e0;
 	border-radius: 3px;
 	color: #19a6e4;
 }
@@ -226,7 +225,7 @@
 .component-editor-menu>li{
 	padding: 5px 10px;
 	line-height: 18px;
-	color: #000!important;
+	color: #000;
 	font-size: 14px;
 	font-weight: normal;
 	white-space: nowrap;

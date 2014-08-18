@@ -14,17 +14,14 @@
 
         events: {
             'click': function(evt, view) {
-                evt.stopPropagation();
                 evt.preventDefault();
                 M(evt.target).is('.component-form', view.ui) && view.close();
             },
             'click .ok': function(evt, view) {
-                evt.stopPropagation();
                 evt.preventDefault();
                 view.pick().check() && view.commit();
             },
             'click .cancel': function(evt, view) {
-                evt.stopPropagation();
                 evt.preventDefault();
                 view.cancel();
             },
