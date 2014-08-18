@@ -9,8 +9,5 @@
 	box-shadow: 0 0 10px #999,0 0 20px #555;
 	color: #f00;
 	z-index: 100000;
-	-webkit-transition: all .25s ease-out;
-	-moz-transition: all .25s ease-out;
-	-o-transition: all .25s ease-out;
 	transition: all .25s ease-out;
 }

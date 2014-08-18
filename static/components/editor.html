@@ -1,8 +1,8 @@
 <div class="component-editor">
 	<header class="component-editor-header">
 		<nav class="component-editor-commands">
-			<a title="撤销" class="no" data-cmd="undo"></a>
-			<a title="恢复" class="no" data-cmd="redo"></a>
+			<a title="撤销" class="icon-undo no" data-cmd="undo"></a>
+			<a title="恢复" class="icon-redo no" data-cmd="redo"></a>
 			<i></i>
 			<a title="加粗" data-cmd="bold" data-alt="B"></a>
 			<a title="斜体" data-cmd="italic" data-alt="I"></a>
@@ -34,14 +34,14 @@
 			</a>
 			<a title="字体大小" data-cmd="size" data-alt="T">
 				<ul class="component-editor-menu no-line-height" style="display:none">
-					<li class="medium def cur">默认大小</li>
-					<li class="x-small">极小</li>
-					<li class="small">特小</li>
-					<li class="medium">小</li>
-					<li class="large">中</li>
-					<li class="x-large">大</li>
-					<li class="xx-large">特大</li>
-					<li class="xxx-large">极大</li>
+					<li class="medium def cur" data-cmd="3">默认大小</li>
+					<li class="x-small" data-cmd="1">极小</li>
+					<li class="small" data-cmd="2">特小</li>
+					<li class="medium" data-cmd="3">小</li>
+					<li class="large" data-cmd="4">中</li>
+					<li class="x-large" data-cmd="5">大</li>
+					<li class="xx-large" data-cmd="6">特大</li>
+					<li class="xxx-large" data-cmd="7">极大</li>
 				</ul>
 			</a>
 			<a title="字体颜色" data-cmd="color" data-alt="A">
@@ -90,34 +90,32 @@
 			</a>
 			<a title="清除格式" data-cmd="clear" data-alt="A"></a>
 			<i></i>
-			<a title="对齐方式" data-cmd="justify">
-				<ul class="component-editor-menu left icon" style="display:none">
-					<li class="left">左对齐</li>
-					<li class="center">居中对齐</li>
-					<li class="right">右对齐</li>
-					<li class="full">两端对齐</li>
+			<a title="对齐方式" class="icon-justify" data-cmd="justify">
+				<ul class="component-editor-menu left" style="display:none">
+					<li class="icon-justify-left" data-cmd="justifyLeft">左对齐</li>
+					<li class="icon-justify-center" data-cmd="justifyCenter">居中对齐</li>
+					<li class="icon-justify-right" data-cmd="justifyRight">右对齐</li>
+					<li class="icon-justify-full" data-cmd="justifyFull">两端对齐</li>
 				</ul>
 			</a>
-			<a title="设置列表" data-cmd="list">
-				<ul class="component-editor-menu left icon" style="display:none">
-					<li class="order">数字列表</li>
-					<li class="unorder">符号列表</li>
+			<a title="设置列表" class="icon-list" data-cmd="list">
+				<ul class="component-editor-menu left" style="display:none">
+					<li class="icon-list-order" data-cmd="insertOrderedList">数字列表</li>
+					<li class="icon-list-unorder" data-cmd="insertUnorderedList">符号列表</li>
 				</ul>
 			</a>
-			<a title="设置缩进" data-cmd="indent">
-				<ul class="component-editor-menu left icon" style="display:none">
-					<li class="indent">增加缩进</li>
-					<li class="outdent">减少缩进</li>
+			<a title="设置缩进" class="icon-indent" data-cmd="indent">
+				<ul class="component-editor-menu left" style="display:none">
+					<li class="icon-indent-increase" data-cmd="indent">增加缩进</li>
+					<li class="icon-indent-decrease" data-cmd="outdent">减少缩进</li>
 				</ul>
 			</a>
 			<i></i>
-			<a title="添加图片" data-cmd="image"></a>
-			<a title="添加表情" data-cmd="face">
-				<ul class="component-editor-menu" style="display:none"></ul>
-			</a>
-			<a title="添加超链接" data-cmd="link"></a>
-			<a title="删除超链接" data-cmd="unlink"></a>
-			<a title="添加日期" data-cmd="date"></a>
+			<a title="添加图片" class="icon-image" data-cmd="image"></a>
+			<a title="添加表情" class="icon-face" data-cmd="face"></a>
+			<a title="添加超链接" class="icon-link" data-cmd="link"></a>
+			<a title="删除超链接" class="icon-unlink" data-cmd="unlink"></a>
+			<a title="添加日期" class="icon-date" data-cmd="date"></a>
 		</nav>
 	</header>
 	<article class="component-editor-content">
@@ -125,4 +123,5 @@
 	</article>
 	<div class="component-editor-url-dialog"></div>
 	<div class="component-editor-image-dialog"></div>
+	<div class="component-editor-face-container"></div>
 </div>

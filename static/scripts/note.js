@@ -182,7 +182,7 @@
     });
 
     var notesview = new(My.View.extend({
-        tpl: '<li><a data-id="{id}">{name}</a><a>{signature}</a><a>{ctime}</a></li>',
+        tpl: '<li><a class="notename" data-id="{id}">{name}</a><span class="signature">{signature}</span><span class="time">{ctime}</span><a class="icon-newtab" title="新窗口打开"></a></li>',
         events: {
             'click li': function(evt, view) {
 
@@ -253,7 +253,7 @@
         },
 
         setType: function(type) {
-            this.$body.find('input[name="type"]').val(type);
+            this.model.set('type', type);
         },
 
         addBook: function(id) {
@@ -378,6 +378,10 @@
             }
             res.status == 1 && (this.addNote(res.data.id), this.close());
             M.component.alerttip.show(res.message);
+        },
+
+        closed: function() {
+            this.editor && this.editor.closed();
         }
     }, 'NoteForm');
 
@@ -451,7 +455,7 @@
     }
 
 
-    M('article>nav>button').click(function(evt) {
+    M('article>nav>a').click(function(evt) {
         openForm(M(this).data('type'));
     });
 

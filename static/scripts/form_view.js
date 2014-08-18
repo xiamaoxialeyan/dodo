@@ -18,12 +18,14 @@
                 evt.preventDefault();
                 M(evt.target).is('.component-form', view.ui) && view.close();
             },
-            'click button.ok': function(evt, view) {
+            'click .ok': function(evt, view) {
                 evt.stopPropagation();
+                evt.preventDefault();
                 view.pick().check() && view.commit();
             },
-            'click button.cancel': function(evt, view) {
+            'click .cancel': function(evt, view) {
                 evt.stopPropagation();
+                evt.preventDefault();
                 view.cancel();
             },
             'submit .form': function(evt, view) {
@@ -45,7 +47,8 @@
             this.model || (this.model = new M.Model());
             this.model.on({
                 change: function(evt) {
-                    _.fill();
+                    var data = evt.data;
+                    _.fill(data[0], data[1]);
                 },
                 commit: function(evt) {
                     _.commited && _.commited(evt.data);
@@ -96,7 +99,12 @@
             return this;
         },
 
-        fill: function() {
+        fill: function(name, val) {
+            if (name) {
+                this.$body.find('[name="' + name + '"]').val(val);
+                return this;
+            }
+
             var _ = this;
             this.$body.find('[name]').each(function() {
                 var v = _.model.get(this.name);

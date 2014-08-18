@@ -1,22 +1,26 @@
 extends layout
 
 block header
+	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/scrollbar.css')
+	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/fonticon.css')
 	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/note.css')
 	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/button.css')
 	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/form_view.css')
 	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/alert_tip.css')
 	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/editor.css')
 	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/accordion.css')
+	link(rel = 'stylesheet', type = 'text/css', href = '/static/css/emoticon.css')
 	
 
 block content
-	header
+	header.header
 		h3 记个事儿吧，就不会忘了！
-	article
+	article.content
 		nav
-			button(title = "新建类别", data-type = "type", data-label = "+类别") 类别
-			button(title = "新建记事本", data-type = "book", data-label = "+记事本") 记事本
-			button(title = "新建记事", data-type = "note", data-label = "+记事") 记事
+			a.icon-home(title = "首页", href="/")
+			a.icon-note-type(title = "新建类别", data-type = "type")
+			a.icon-note-book(title = "新建记事本", data-type = "book")
+			a.icon-note-note(title = "新建记事", data-type = "note")
 
 		section.clearfix
 			//- a.arrow_up
@@ -42,5 +46,6 @@ block footer
 	script(type = "text/javascript", src = "/static/scripts/form_view.js")
 	script(type = "text/javascript", src = "/static/scripts/alert_tip.js")
 	script(type = "text/javascript", src = "/static/scripts/accordion.js")
+	script(type = "text/javascript", src = "/static/scripts/emoticon.js")
 	script(type = "text/javascript", src = "/static/scripts/editor.js")
 	script(type = "text/javascript", src = "/static/scripts/note.js")

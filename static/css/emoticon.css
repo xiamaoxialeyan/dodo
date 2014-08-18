@@ -1,0 +1,152 @@
+@import url('fonticon.css');
+
+@font-face {
+	font-family: 'digital';
+	src: url('/static/fonts/DS-DIGI.TTF');	
+}
+
+.component-emoticon{
+	display: flex;
+	flex-flow: column;
+	width: 530px;
+	height: 360px;
+	padding: 10px;
+	padding-bottom: 0;
+	border: 1px solid #6d7a89;
+	border-radius: 3px;
+	background: #fff;
+	box-shadow: 0 0 9px #999;
+}
+
+.component-emoticon-header{
+	position: relative;
+	height: 30px;
+	padding-left: 10px;
+}
+
+.component-emoticon-header h1{
+	margin: 0;
+	padding: 0;
+	font-size: 100%;
+}
+
+.component-emoticon-header a.icon-close{
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 5px;
+	color: #bdc0c1;
+	font-size: 20px;
+	cursor: pointer;
+	transition: all .35s linear;
+}
+
+.component-emoticon-header a.icon-close::before{
+	content: '\e678';
+}
+
+.component-emoticon-header a.icon-close:hover{
+	background: rgba(0,0,0,.5);
+	border-radius: 3px;
+	color: #fff;
+}
+
+.component-emoticon-icons{
+	flex: 1;
+	overflow: hidden;
+}
+
+.component-emoticon-stacks{
+	display: flex;
+	position: relative;
+	transition: all linear .25s;
+}
+
+.component-emoticon-stack{
+	flex: 1;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	display: flex;
+	flex-flow: row wrap;
+	align-content: flex-start;
+}
+
+.component-emoticon-stack li{
+	padding: 8px;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.component-emoticon-stack ul li:hover{
+	border: 1px solid #ccc;
+}
+
+.component-emoticon-stack li>img{
+	width: 50px;
+	height: 50px;
+	border: none;
+	vertical-align: middle;
+}
+
+.component-emoticon-stacks-nav{
+	height: 20px;
+	text-align: center;
+}
+
+.component-emoticon-stacks-nav a{
+	position: relative;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	line-height: 20px;
+	margin: 0 8px;
+	color: #19a6e4;
+	font-family: digital;
+	text-align: center;
+	border-radius: 50%;
+	background: none;
+	cursor: pointer;
+	transition: all .35s ease-out;
+}
+
+.component-emoticon-stacks-nav a.cur{
+	color: #fff;
+	background: rgba(104, 94, 107, 1);
+	box-shadow: 0 0 10px rgba(13, 13, 14, 1);
+}
+
+.component-emoticon-nav{
+	position: relative;
+	margin-top: 5px;
+	padding: 0 10px;
+	height: 30px;
+	border-top: 5px solid #ccc;
+}
+
+.component-emoticon-nav i{
+	position: absolute;
+	top: -6px;
+	left: 10px;
+	display: block;
+	width: 50px;
+	height: 7px;
+	background: rgb(191, 92, 246);
+	transition: all ease-in .25s;
+}
+
+.component-emoticon-nav a{
+	display: inline-block;
+	width: 50px;
+	height: 30px;
+	line-height: 25px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.component-emoticon-nav a>img{
+	width: 20px;
+	height: 20px;
+	border: none;
+	vertical-align: middle;
+}

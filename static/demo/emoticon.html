@@ -2,8 +2,28 @@
 <html>
 <head>
 	<title>表情组件</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/button.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/emoticon.css">
 </head>
 <body>
+	<button class="component-btn sea" onclick="show()">表情</button>
+	<div id="chartbox" contenteditable="true" style="border:1px solid #ccc;height:200px"></div>
+	<div id="emojibox"></div>
 
+	<script type="text/javascript" src="http://lib.dodo.com.cn:8888/My.js"></script>
+	<script type="text/javascript" src="/static/scripts/emoticon.js"></script>
+	<script type="text/javascript">
+		var emoticon = null;
+
+		function show() {
+		    if (!emoticon) {
+		        emoticon = new M.component.Emoticon('#emojibox');
+		        emoticon.on('selected', function(evt) {
+		            M('#chartbox').append('<img src="' + evt.data + '">');
+		        });
+		    }
+		    emoticon.open();
+		}
+	</script>
 </body>
 </html>

@@ -13,6 +13,7 @@
             },
             'click ul>li': function(evt, view) {
                 evt.stopPropagation();
+                evt.preventDefault();
                 var $t = M(this);
                 (view.toggle($t.parent()).selected($t, true)[$t.parents('a[data-cmd]').data('cmd')]($t));
             }
@@ -133,15 +134,7 @@
         },
 
         size: function($li) {
-            this.exec('fontSize', {
-                'x-small': 1,
-                'small': 2,
-                'medium': 3,
-                'large': 4,
-                'x-large': 5,
-                'xx-large': 6,
-                'xxx-large': 7
-            }[$li.cls()[0]]);
+            this.exec('fontSize', $li.data('cmd'));
         },
 
         color: function($li) {
@@ -158,25 +151,15 @@
         },
 
         justify: function($li) {
-            this.exec({
-                left: 'justifyLeft',
-                center: 'justifyCenter',
-                right: 'justifyRight',
-                full: 'justifyFull'
-            }[$li.cls()[0]]);
+            this.exec($li.data('cmd'));
         },
 
         list: function($li) {
-            $li.removeClass('cur');
-            this.exec({
-                order: 'insertOrderedList',
-                unorder: 'insertUnorderedList'
-            }[$li.cls()[0]]);
+            this.exec($li.data('cmd'));
         },
 
         indent: function($li) {
-            $li.removeClass('cur');
-            this.exec($li.cls()[0]);
+            this.exec($li.data('cmd'));
         },
 
         image: function($a) {
@@ -194,8 +177,23 @@
             this.exec('insertImage', url);
         },
 
-        face: function() {
+        face: function($a) {
+            $a.removeClass('cur');
 
+            if (this.emoticon) {
+                this.emoticon.open($a.offset());
+                return;
+            }
+
+            this.emoticon = new M.component.Emoticon(this.ui.find('.component-editor-face-container'));
+            this.emoticon.on('selected', function(evt, scope) {
+                scope.doFace(evt.data);
+            }, this);
+            this.emoticon.open($a.offset());
+        },
+
+        doFace: function(url) {
+            this.exec('insertImage', url);
         },
 
         link: function($a) {
@@ -230,6 +228,12 @@
         date: function($a) {
             $a.removeClass('cur');
             this.exec('insertText', M.formatDate(M.now(), 'yyyy-MM-dd'));
+        },
+
+        closed: function() {
+            this.imageform && this.imageform.close();
+            this.urlform && this.urlform.close();
+            this.emoticon && this.emoticon.close();
         }
     }, 'Editor');
 
@@ -319,6 +323,7 @@
             ].join('')
         });
     }
+
     var ImageForm = M.component.Form.extend({
         owner: function(o) {
             this.editor = o;
